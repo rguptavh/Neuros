@@ -40,7 +40,7 @@ export default class App extends React.Component {
 
                 elevation: 8,
               }}>
-                <Text style={{ fontSize: Math.min(rem * 17.5, wid * 31.5), fontWeight: 'bold', color: 'white', }}>Anirudh Adiraju</Text>
+                <Text style={{ fontSize: Math.min(rem * 17.5, wid * 31.5), fontWeight: 'bold', color: 'white', }}>{global.firstname} {global.lastname}</Text>
               </View>
             </View>
             <View style={{ flex: 0.5, width: '100%' }}></View>
