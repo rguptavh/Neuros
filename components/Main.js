@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, KeyboardAvoidingView, TouchableWithoutFeedback, Dimensions, Image, TextInput, TouchableOpacity, Keyboard } from 'react-native';
+import { StyleSheet, Text, View, TouchableWithoutFeedback, Dimensions, Image, TextInput, TouchableOpacity, Keyboard } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
@@ -27,7 +27,6 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={styles.container}>
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
           <View style={styles.container}>
             <View style={{ flex: 1, width: '85%', marginTop: getStatusBarHeight(), }}>
@@ -48,16 +47,18 @@ export default class App extends React.Component {
             <View style={{ flex: 9, width: '90%' }}>
               <View style={{ width: '100%', flex: 1, flexDirection: 'row' }}>
                 <View style={{
-                  flex: 1, height: '95%', shadowOffset: {
-                    width: 0,
-                    height: 4,
-                  },
-                  shadowOpacity: 0.30,
-                  shadowRadius: 3.65,
-
-                  elevation: 8,
+                  flex: 1, height: '95%',
                 }}>
-                  <TouchableOpacity>
+                  <TouchableOpacity style={{
+                    shadowOffset: {
+                      width: 0,
+                      height: 4,
+                    },
+                    shadowOpacity: 0.30,
+                    shadowRadius: 3.65,
+
+                    elevation: 8,
+                  }}>
                     <LinearGradient
                       colors={['#B1E2FE', '#86BEFF']}
                       style={{ height: '100%', alignItems: 'center', borderRadius: 20, width: '100%', justifyContent: 'center', }}>
@@ -65,24 +66,26 @@ export default class App extends React.Component {
                       <View style={{ flex: 3, width: '100%' }}>
                         <Image style={{ width: '100%', height: '100%' }} source={require('../assets/plus.png')} resizeMode='contain'></Image>
                       </View>
-                      <View style={{ flex: 3, width: '100%', justifyContent:'center', alignItems:'center' }}>
-                        <Text style = {{fontWeight:'bold', fontSize:Math.min(12.5*rem,22.5*wid)}}>Add Person</Text>
+                      <View style={{ flex: 3, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={{ fontWeight: 'bold', fontSize: Math.min(12.5 * rem, 22.5 * wid) }}>Add Person</Text>
                       </View>
                     </LinearGradient>
                   </TouchableOpacity>
                 </View>
                 <View style={{ flex: 0.15, height: '95%' }}></View>
                 <View style={{
-                  flex: 1, height: '95%', shadowOffset: {
-                    width: 0,
-                    height: 4,
-                  },
-                  shadowOpacity: 0.30,
-                  shadowRadius: 3.65,
-
-                  elevation: 8,
+                  flex: 1, height: '95%',
                 }}>
-                  <TouchableOpacity>
+                  <TouchableOpacity style={{
+                    shadowOffset: {
+                      width: 0,
+                      height: 4,
+                    },
+                    shadowOpacity: 0.30,
+                    shadowRadius: 3.65,
+
+                    elevation: 8,
+                  }}>
                     <LinearGradient
                       colors={['#B1E2FE', '#86BEFF']}
                       style={{ height: '100%', alignItems: 'center', borderRadius: 20, width: '100%', justifyContent: 'center', }}>
@@ -90,26 +93,28 @@ export default class App extends React.Component {
                       <View style={{ flex: 3, width: '100%' }}>
                         <Image style={{ width: '100%', height: '100%' }} source={require('../assets/user.png')} resizeMode='contain'></Image>
                       </View>
-                      <View style={{ flex: 3, width: '100%', justifyContent:'center', alignItems:'center' }}>
-                        <Text style = {{fontWeight:'bold', fontSize:Math.min(12.5*rem,22.5*wid)}}>Your People</Text>
+                      <View style={{ flex: 3, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={{ fontWeight: 'bold', fontSize: Math.min(12.5 * rem, 22.5 * wid) }}>Your People</Text>
                       </View>
                     </LinearGradient>
                   </TouchableOpacity>
                 </View>
               </View>
-              <View style = {{flex:0.05}}></View>
+              <View style={{ flex: 0.05 }}></View>
               <View style={{ width: '100%', flex: 1, flexDirection: 'row' }}>
                 <View style={{
-                  flex: 1, height: '95%', shadowOffset: {
-                    width: 0,
-                    height: 4,
-                  },
-                  shadowOpacity: 0.30,
-                  shadowRadius: 3.65,
-
-                  elevation: 8,
+                  flex: 1, height: '95%',
                 }}>
-                  <TouchableOpacity>
+                  <TouchableOpacity style={{
+                    shadowOffset: {
+                      width: 0,
+                      height: 4,
+                    },
+                    shadowOpacity: 0.30,
+                    shadowRadius: 3.65,
+
+                    elevation: 8,
+                  }}>
                     <LinearGradient
                       colors={['#B1E2FE', '#86BEFF']}
                       style={{ height: '100%', alignItems: 'center', borderRadius: 20, width: '100%', justifyContent: 'center', }}>
@@ -117,23 +122,25 @@ export default class App extends React.Component {
                       <View style={{ flex: 3, width: '100%' }}>
                         <Image style={{ width: '100%', height: '100%' }} source={require('../assets/org.png')} resizeMode='contain'></Image>
                       </View>
-                      <View style={{ flex: 3, width: '100%', alignItems:'center', justifyContent:'center' }}>
+                      <View style={{ flex: 3, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
                       </View>
                     </LinearGradient>
                   </TouchableOpacity>
                 </View>
                 <View style={{ flex: 0.15, height: '95%' }}></View>
                 <View style={{
-                  flex: 1, height: '95%', shadowOffset: {
-                    width: 0,
-                    height: 4,
-                  },
-                  shadowOpacity: 0.30,
-                  shadowRadius: 3.65,
-
-                  elevation: 8,
+                  flex: 1, height: '95%',
                 }}>
-                  <TouchableOpacity>
+                  <TouchableOpacity style={{
+                    shadowOffset: {
+                      width: 0,
+                      height: 4,
+                    },
+                    shadowOpacity: 0.30,
+                    shadowRadius: 3.65,
+
+                    elevation: 8,
+                  }}>
                     <LinearGradient
                       colors={['#B1E2FE', '#86BEFF']}
                       style={{ height: '100%', alignItems: 'center', borderRadius: 20, width: '100%', justifyContent: 'center', }}>
@@ -146,19 +153,21 @@ export default class App extends React.Component {
                   </TouchableOpacity>
                 </View>
               </View>
-              <View style = {{flex:0.05}}></View>
+              <View style={{ flex: 0.05 }}></View>
               <View style={{ width: '100%', flex: 1, flexDirection: 'row' }}>
                 <View style={{
-                  flex: 1, height: '95%', shadowOffset: {
-                    width: 0,
-                    height: 4,
-                  },
-                  shadowOpacity: 0.30,
-                  shadowRadius: 3.65,
-
-                  elevation: 8,
+                  flex: 1, height: '95%',
                 }}>
-                  <TouchableOpacity>
+                  <TouchableOpacity style={{
+                    shadowOffset: {
+                      width: 0,
+                      height: 4,
+                    },
+                    shadowOpacity: 0.30,
+                    shadowRadius: 3.65,
+
+                    elevation: 8,
+                  }}>
                     <LinearGradient
                       colors={['#B1E2FE', '#86BEFF']}
                       style={{ height: '100%', alignItems: 'center', borderRadius: 20, width: '100%', justifyContent: 'center', }}>
@@ -172,16 +181,18 @@ export default class App extends React.Component {
                 </View>
                 <View style={{ flex: 0.15, height: '95%' }}></View>
                 <View style={{
-                  flex: 1, height: '95%', shadowOffset: {
-                    width: 0,
-                    height: 4,
-                  },
-                  shadowOpacity: 0.30,
-                  shadowRadius: 3.65,
-
-                  elevation: 8,
+                  flex: 1, height: '95%',
                 }}>
-                  <TouchableOpacity>
+                  <TouchableOpacity style={{
+                    shadowOffset: {
+                      width: 0,
+                      height: 4,
+                    },
+                    shadowOpacity: 0.30,
+                    shadowRadius: 3.65,
+
+                    elevation: 8,
+                  }}>
                     <LinearGradient
                       colors={['#B1E2FE', '#86BEFF']}
                       style={{ height: '100%', alignItems: 'center', borderRadius: 20, width: '100%', justifyContent: 'center', }}>
@@ -198,7 +209,6 @@ export default class App extends React.Component {
             <View style={{ flex: 0.5, width: '100%' }}></View>
           </View>
         </TouchableWithoutFeedback>
-      </KeyboardAvoidingView >
     );
 
   }

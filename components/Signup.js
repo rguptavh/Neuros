@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, KeyboardAvoidingView, TouchableWithoutFeedback, Dimensions, Image, TextInput, TouchableOpacity, Keyboard } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const entireScreenHeight = Dimensions.get('window').height;
 const rem = entireScreenHeight / 380;
@@ -10,6 +11,7 @@ export default class App extends React.Component {
   state = {
     firstname: '',
     lastname: '',
+    loading:false,
   }
   constructor() {
     super();
@@ -22,12 +24,13 @@ export default class App extends React.Component {
   }
 
   signup = async() => {
+    this.setState({loading:true})
     var firstlast = this.state.firstname + this.state.lastname;
     firstlast = firstlast.toLowerCase();
     var data = {name: firstlast};
     console.log(firstlast)
     try {
-      let res = await fetch('https://eastus.api.cognitive.microsoft.com/face/v1.0/facelists/'+firstlast, {
+      var res = await fetch('https://eastus.api.cognitive.microsoft.com/face/v1.0/facelists/'+firstlast, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -35,13 +38,26 @@ export default class App extends React.Component {
         },
         body: 
           JSON.stringify(data)    
-
-          
-      
       });
-      res = await res.json();
-      console.log(res)
+      res = await res.text();
+      this.setState({loading:false})
+      if (res == ''){
+        global.firstname = this.state.firstname
+        global.lastname = this.state.lastname
+        this.props.navigation.navigate('Main')
+        return
+      }
+      res = JSON.parse(res)
+      if (res.error.code == 'FaceListExists'){
+        global.firstname = this.state.firstname
+        global.lastname = this.state.lastname
+        this.props.navigation.navigate('Main')
+      }
+      else{
+        alert("An error occured")
+      }
     } catch (e) {
+      console.log(res)
       console.error(e);
     }    
 
@@ -57,6 +73,11 @@ export default class App extends React.Component {
       <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={styles.container}>
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
           <View style={styles.container}>
+          <Spinner
+            visible={this.state.loading}
+            textContent={'Signing Up...'}
+            textStyle={styles.spinnerTextStyle}
+          />
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
               <View style={{ width: entireScreenHeight / 4 * 0.8 * 0.85, height: '80%', marginTop: '15%', }}>
                 <Image style={{ width: '100%', height: '100%' }} source={require('../assets/logo.png')} resizeMode='contain'></Image>
@@ -109,7 +130,7 @@ export default class App extends React.Component {
               </View>
             </View>
             <View style={{ flex: 1, alignItems: 'center', width: '100%' }}>
-              <TouchableOpacity style = {{height:'40%', width:'60%', borderRadius:30, alignItems:'center', justifyContent:'center'}}>
+              <TouchableOpacity style = {{height:'40%', width:'60%', borderRadius:30, alignItems:'center', justifyContent:'center'}} onPress={() => this.signup()}>
                 <LinearGradient
                   colors={['#D3E5FF', '#86BEFF']}
                   style={{ height: '100%', alignItems: 'center', borderRadius: 30, width: '100%', justifyContent: 'center' }}>
@@ -131,5 +152,9 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  spinnerTextStyle: {
+    color: '#FFF',
+    top: 60
   },
 });
