@@ -6,6 +6,7 @@ import Swipeable from 'react-native-swipeable-row';
 import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
 import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
 
 
 const entireScreenHeight = Dimensions.get('window').height;
@@ -63,7 +64,7 @@ export default class App extends React.Component {
       mediaTypes: ImagePicker.MediaTypeOptions.Images
     });
     if (!result.cancelled) {
-      
+      this.setState({photo: {uri : result.uri}})
       this.setState({ camera: false })
     }
   }
