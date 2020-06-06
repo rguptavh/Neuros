@@ -6,6 +6,7 @@ import * as Font from 'expo-font';
 import signup from './components/Signup';
 import main from './components/Main';
 import memory from './components/Memory';
+import add from './components/Add';
 let signedup = false
 
 export default class App extends React.Component {
@@ -43,6 +44,9 @@ export default class App extends React.Component {
         },
         Memory: {
           screen:memory
+        },
+        Add: {
+          screen:add
         },
       },
         {
