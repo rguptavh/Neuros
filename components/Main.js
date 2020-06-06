@@ -124,7 +124,7 @@ export default class App extends React.Component {
           this.setState({camera: false});
         }
         else{
-          alert("This person is not in your list of people. Add them to the list if you wish to recognize them in the future.");
+          alert("This person is not in your list of people. Please retake the picture or Add them to the list if you wish to recognize them in the future.");
         }
 
 
