@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, KeyboardAvoidingView, TouchableWithoutFeedback, Dimensions, Image, TextInput, TouchableOpacity, Keyboard, Alert, FlatList, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, KeyboardAvoidingView, TouchableWithoutFeedback, Dimensions, Image, TextInput, TouchableOpacity, Keyboard, Alert, FlatList, TouchableHighlight, AsyncStorage } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Spinner from 'react-native-loading-spinner-overlay';
 import Swipeable from 'react-native-swipeable-row';
@@ -7,6 +7,8 @@ import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
 import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import * as ImageManipulator from "expo-image-manipulator";
+
 
 
 const entireScreenHeight = Dimensions.get('window').height;
@@ -33,6 +35,31 @@ export default class App extends React.Component {
   componentDidMount() {
     this.setState({ assetsLoaded: true });
   }
+  uriToBlob = (uri) => {
+
+    return new Promise((resolve, reject) => {
+
+      const xhr = new XMLHttpRequest();
+
+      xhr.onload = function () {
+        // return the blob
+        resolve(xhr.response);
+      };
+
+      xhr.onerror = function () {
+        // something went wrong
+        reject(new Error('uriToBlob failed'));
+      };
+
+      // this helps us get a blob
+      xhr.responseType = 'blob';
+
+      xhr.open('GET', uri, true);
+      xhr.send(null);
+
+    });
+
+  }
   addmemory = () => {
     var temp = this.state.memories;
       temp.splice(temp.length - 1, 0, { index: temp.length - 1, memory:'' });
@@ -49,12 +76,60 @@ export default class App extends React.Component {
           : Camera.Constants.Type.back
     })
   }
+  addperson = async(papi) => {
+    var listid = 'bruhbruh';
+    try {
+      let res = await fetch('https://eastus.api.cognitive.microsoft.com/face/v1.0/facelists/'+listid+'/persistedFaces?detectionModel=detection_01', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/octet-stream',
+          'Ocp-Apim-Subscription-Key': '2fa437586d3e40a6a80c5280cfacd94c',
+        },
+        body: 
+          papi,
+      
+      });
+      this.setState({ loading: false });
+
+      res = await res.json();
+      if(res.length!=0){
+        console.log(res)
+        this.setState({camera: false});
+
+      }
+      else{
+        alert("No face detected in the photo. Please retake");
+      }
+
+    } catch (e) {
+      console.error(e);
+    } 
+
+  }
 
   takePicture = async () => {
     if (this.camera) {
+      console.log('pressed papi');
+      //this.setState({camera: false})
+      this.setState({ loading: true });
+
       let photo = await this.camera.takePictureAsync();
-      this.setState({photo: {uri : photo.uri}})
-      this.setState({ camera: false })
+      const manipResult = await ImageManipulator.manipulateAsync(
+        photo.uri,
+        [],
+        { compress: 0.75, format: ImageManipulator.SaveFormat.JPEG }
+      );
+
+
+      this.uriToBlob(manipResult.uri).then((blob)  => {
+          global.papito = blob;
+          console.log(JSON.stringify(global.papito))
+          this.addperson(blob);
+
+      }).catch((error) => {
+        throw error;
+      }); 
+      //console.log(JSON.stringify(global.papito))
 
     }
   }
@@ -64,54 +139,32 @@ export default class App extends React.Component {
       mediaTypes: ImagePicker.MediaTypeOptions.Images
     });
     if (!result.cancelled) {
-      this.setState({photo: {uri : result.uri}})
-      this.setState({ camera: false })
+      this.setState({ loading: true });
+
+      const manipResult = await ImageManipulator.manipulateAsync(
+        result.uri,
+        [],
+        { compress: 0.75, format: ImageManipulator.SaveFormat.JPEG }
+      );
+        this.uriToBlob(manipResult.uri).then((blob)  => {
+          global.papito = blob;
+          console.log(JSON.stringify(global.papito))
+          this.addperson(blob);
+
+      }).catch((error) => {
+        throw error;
+      }); 
     }
   }
-  signup = async () => {
-    this.setState({ loading: true })
-    if (this.state.firstname != '' && this.state.lastname != '') {
-      var firstlast = this.state.firstname + this.state.lastname;
-      firstlast = firstlast.toLowerCase();
-      var data = { name: firstlast };
-      console.log(firstlast)
-      try {
-        var res = await fetch('https://eastus.api.cognitive.microsoft.com/face/v1.0/facelists/' + firstlast, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'Ocp-Apim-Subscription-Key': '2fa437586d3e40a6a80c5280cfacd94c'
-          },
-          body:
-            JSON.stringify(data)
-        });
-        res = await res.text();
-        this.setState({ loading: false })
-        if (res == '') {
-          global.firstname = this.state.firstname
-          global.lastname = this.state.lastname
-          this.props.navigation.replace('Main')
-          return
-        }
-        res = JSON.parse(res)
-        if (res.error.code == 'FaceListExists') {
-          global.name = this.state.firstname + " " + this.state.lastname
-          this.props.navigation.replace('Main')
-        }
-        else {
-          alert("An error occured")
-        }
-      } catch (e) {
-        console.log(res)
-        console.error(e);
-      }
+
+  addition = () =>{
+    var persons = AsyncStorage.getItem('people');
 
 
-    }
-    else {
-      Alert.alert('Signup error', "Please fill all fields")
-    }
   }
+
+
+
 
 
   _renderItem = ({ item }) => {
@@ -186,7 +239,7 @@ export default class App extends React.Component {
                   alignItems: 'center',
                   backgroundColor: 'transparent'
                 }}
-                onPress={() => this.setState({camera: false})}>
+                onPress={() => this.setState({camera:false})}>
                 <Ionicons
                   name="ios-arrow-back"
                   style={{ color: "#fff", fontSize: 40 }}
@@ -296,7 +349,7 @@ export default class App extends React.Component {
                   shadowRadius: 3.65,
 
                   elevation: 8,
-                }} onPress={() => this.signup()}>
+                }} onPress={() => this.addition()}>
                   <View
                     style={{ height: '100%', alignItems: 'center', borderRadius: 30, width: '100%', justifyContent: 'center', backgroundColor: '#93C7FF' }}>
                     <Text style={{ color: 'white', fontSize: Math.min(25 * rem, 45 * wid), textAlign: 'center', fontWeight: 'bold', fontFamily: 'DroidB' }}>Submit</Text>
