@@ -119,12 +119,18 @@ export default class App extends React.Component {
         pons = await pons.json();
         console.log('i');
         console.log(pons);
-        this.setState({ loading: false });
-        this.setState({camera: false});
+        if(pons.length!=0){
+          this.setState({ loading: false });
+          this.setState({camera: false});
+        }
+        else{
+          alert("This person is not in your list of people. Add them to the list if you wish to recognize them in the future.");
+        }
+
 
       }
       else{
-        alert("No person found in database");
+        alert("No face found in the photo. Please retake.");
       }
 
     } catch (e) {
