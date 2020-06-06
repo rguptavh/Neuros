@@ -21,6 +21,34 @@ export default class App extends React.Component {
     this.setState({ assetsLoaded: true });
   }
 
+  signup = async() => {
+    var firstlast = this.state.firstname + this.state.lastname;
+    firstlast = firstlast.toLowerCase();
+    var data = {name: firstlast};
+    console.log(firstlast)
+    try {
+      let res = await fetch('https://eastus.api.cognitive.microsoft.com/face/v1.0/facelists/'+firstlast, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Ocp-Apim-Subscription-Key': '2fa437586d3e40a6a80c5280cfacd94c'
+        },
+        body: 
+          JSON.stringify(data)    
+
+          
+      
+      });
+      res = await res.json();
+      console.log(res)
+    } catch (e) {
+      console.error(e);
+    }    
+
+
+  }
+
+
 
 
 
@@ -81,7 +109,7 @@ export default class App extends React.Component {
               </View>
             </View>
             <View style={{ flex: 1, alignItems: 'center', width: '100%' }}>
-              <TouchableOpacity style = {{height:'50%', width:'60%', borderRadius:30, alignItems:'center', justifyContent:'center'}}>
+              <TouchableOpacity style = {{height:'50%', width:'60%', borderRadius:30, alignItems:'center', justifyContent:'center'}} onPress = {() => this.signup()}>
                 <LinearGradient
                   colors={['#D3E5FF', '#86BEFF']}
                   style={{ height: '100%', alignItems: 'center', borderRadius: 30, width: '100%', justifyContent: 'center' }}>
