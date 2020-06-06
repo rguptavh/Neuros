@@ -109,7 +109,7 @@ export default class App extends React.Component {
               </View>
             </View>
             <View style={{ flex: 1, alignItems: 'center', width: '100%' }}>
-              <TouchableOpacity style = {{height:'50%', width:'60%', borderRadius:30, alignItems:'center', justifyContent:'center'}} onPress = {() => this.signup()}>
+              <TouchableOpacity style = {{height:'40%', width:'60%', borderRadius:30, alignItems:'center', justifyContent:'center'}}>
                 <LinearGradient
                   colors={['#D3E5FF', '#86BEFF']}
                   style={{ height: '100%', alignItems: 'center', borderRadius: 30, width: '100%', justifyContent: 'center' }}>
