@@ -133,6 +133,22 @@ export default class App extends React.Component {
 
   }
 
+  findobjects = async(papi) => {
+    let pons = await fetch('https://eastus.api.cognitive.microsoft.com/vision/v2.0/detect', {
+          
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/octet-stream',
+        'Ocp-Apim-Subscription-Key': '8dcc812d270747cf81ae4aab6955b303',
+      },
+      body: 
+        papi
+    
+    });
+    pons = await pons.json();
+    console.log(pons); 
+  }
+
   takePicture2 = async () => {
     if (this.camera) {
       console.log('pressed papi');
@@ -191,14 +207,14 @@ export default class App extends React.Component {
       const manipResult = await ImageManipulator.manipulateAsync(
         photo.uri,
         [],
-        { compress: 0.75, format: ImageManipulator.SaveFormat.JPEG }
+        { compress: 0.5, format: ImageManipulator.SaveFormat.JPEG }
       );
 
 
       this.uriToBlob(manipResult.uri).then((blob)  => {
           global.papito = blob;
           console.log(JSON.stringify(global.papito))
-          this.findperson(blob);
+          this.findobjects(blob);
 
       }).catch((error) => {
         throw error;
@@ -222,7 +238,7 @@ export default class App extends React.Component {
         this.uriToBlob(manipResult.uri).then((blob)  => {
           global.papito = blob;
           console.log(JSON.stringify(global.papito))
-          this.getage(blob);
+          this.findobjects(blob);
 
       }).catch((error) => {
         throw error;
