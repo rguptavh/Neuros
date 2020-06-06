@@ -543,6 +543,7 @@ return (
         </View>
       </TouchableWithoutFeedback>
     );
+  }
 }
 
 const styles = StyleSheet.create({
