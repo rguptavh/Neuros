@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, KeyboardAvoidingView, TouchableWithoutFeedback, Dimensions, Image, TextInput, TouchableOpacity, Keyboard } from 'react-native';
+import { StyleSheet, Text, View, KeyboardAvoidingView, TouchableWithoutFeedback, Dimensions, Image, TextInput, TouchableOpacity, Keyboard, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Spinner from 'react-native-loading-spinner-overlay';
 
@@ -25,6 +25,7 @@ export default class App extends React.Component {
 
   signup = async() => {
     this.setState({loading:true})
+    if (this.state.firstname != '' && this.state.lastname != ''){
     var firstlast = this.state.firstname + this.state.lastname;
     firstlast = firstlast.toLowerCase();
     var data = {name: firstlast};
@@ -44,14 +45,14 @@ export default class App extends React.Component {
       if (res == ''){
         global.firstname = this.state.firstname
         global.lastname = this.state.lastname
-        this.props.navigation.navigate('Main')
+        this.props.navigation.replace('Main')
         return
       }
       res = JSON.parse(res)
       if (res.error.code == 'FaceListExists'){
         global.firstname = this.state.firstname
         global.lastname = this.state.lastname
-        this.props.navigation.navigate('Main')
+        this.props.navigation.replace('Main')
       }
       else{
         alert("An error occured")
@@ -63,6 +64,10 @@ export default class App extends React.Component {
 
 
   }
+  else{
+    Alert.alert('Signup error', "Please fill all fields")
+  }
+}
 
 
 
