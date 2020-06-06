@@ -22,7 +22,7 @@ export default class App extends React.Component {
     memories: [{ index: 0, memory:'', add: false }, { index: 1, memory: '', add: true }],
     camera: false,
     cameraType: Camera.Constants.Type.back,
-    photo: require('../assets/plus.png')
+    photo: require('../assets/profile.png')
   }
   constructor() {
     super();
@@ -245,7 +245,7 @@ export default class App extends React.Component {
               textStyle={styles.spinnerTextStyle}
             />
             <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center', }}>
-              <TouchableOpacity style={{ width: entireScreenHeight / 4 * 0.8 * 0.85, height: '80%', marginTop: '15%', }} onPress={async () => {
+              <TouchableOpacity style={{ width: entireScreenHeight / 2.5 * 0.8 * 0.85, height: '80%', marginTop: '15%', }} onPress={async () => {
                 if (!this.state.hasPermission) {
                   await this.getPermissionAsync();
                 }
