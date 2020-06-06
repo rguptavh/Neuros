@@ -4,7 +4,7 @@ import { createStackNavigator } from 'react-navigation-stack'
 import { createAppContainer } from 'react-navigation';
 import signup from './components/Signup';
 import main from './components/Main';
-let signedup = true
+let signedup = false
 
 export default class App extends React.Component {
   state = {
