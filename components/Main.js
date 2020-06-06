@@ -40,7 +40,7 @@ export default class App extends React.Component {
 
                 elevation: 8,
               }}>
-                <Text style={{ fontSize: Math.min(rem * 17.5, wid * 31.5), fontWeight: 'bold', color: 'white', }}>{global.firstname} {global.lastname}</Text>
+                <Text style={{ fontSize: Math.min(rem * 17.5, wid * 31.5), fontWeight: 'bold', color: 'white', fontFamily:'DroidB' }}>{global.name}</Text>
               </View>
             </View>
             <View style={{ flex: 0.5, width: '100%' }}></View>
@@ -167,7 +167,7 @@ export default class App extends React.Component {
                     shadowRadius: 3.65,
 
                     elevation: 8,
-                  }}>
+                  }} onPress={() => this.props.navigation.navigate('Memory')}>
                     <LinearGradient
                       colors={['#B1E2FE', '#86BEFF']}
                       style={{ height: '100%', alignItems: 'center', borderRadius: 20, width: '100%', justifyContent: 'center', }}>
@@ -220,5 +220,6 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor:'#DAF8FF'
   },
 });
