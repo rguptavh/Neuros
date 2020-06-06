@@ -2,8 +2,11 @@ import React from 'react';
 import { StyleSheet, Text, View, AppLoading } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack'
 import { createAppContainer } from 'react-navigation';
+import * as Font from 'expo-font';
 import signup from './components/Signup';
 import main from './components/Main';
+import memory from './components/Memory';
+import add from './components/Add';
 let signedup = false
 
 export default class App extends React.Component {
@@ -16,7 +19,11 @@ export default class App extends React.Component {
     // Ignore dynamic type scaling on iOS
     Text.defaultProps.allowFontScaling = false;
   }
-  componentDidMount() {
+  async componentDidMount() {
+    await Font.loadAsync({
+      'DroidB': require('./assets/fonts/DroidSans-Bold.ttf'),
+      'Droid': require('./assets/fonts/DroidSans.ttf'),
+    });
     this.setState({ assetsLoaded: true });
   }
   
@@ -34,6 +41,12 @@ export default class App extends React.Component {
         },
         Main: {
           screen:main
+        },
+        Memory: {
+          screen:memory
+        },
+        Add: {
+          screen:add
         },
       },
         {

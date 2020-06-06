@@ -355,216 +355,58 @@ export default class App extends React.Component {
 
 
   render() {
-    if(this.state.camera){
-      if(this.state.action == 'add'){
-        return (
-          <View style={{ flex: 1 }}>
-              <Spinner
-                visible={this.state.loading}
-                textContent={'Checking Age...'}
-                textStyle={styles.spinnerTextStyle}
-              />
-            <Camera style={{ flex: 1 }} type={this.state.cameraType} ref={ref => { this.camera = ref }}>
-              <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between", margin: 30 }}>
-                
-              <TouchableOpacity
-                  style={{
-                    alignSelf: 'flex-end',
-                    alignItems: 'center',
-                    backgroundColor: 'transparent'
-                  }}
-                  onPress={() => this.setState({camera: false})}>
-                  <Ionicons
-                    name="ios-arrow-back"
-                    style={{ color: "#fff", fontSize: 40 }}
-                  />
-                </TouchableOpacity>
+return (
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
+        <View style={styles.container}>
+          <View style={{ flex: 1, width: '85%', marginTop: getStatusBarHeight(), }}>
+            <View style={{
+              width: '100%', height: '100%', backgroundColor: '#86BEFF', borderRadius: 20, justifyContent: 'center', alignItems: 'center', shadowOffset: {
+                width: 0,
+                height: 4,
+              },
+              shadowOpacity: 0.30,
+              shadowRadius: 3.65,
 
-                <TouchableOpacity
-                  style={{
-                    alignSelf: 'flex-end',
-                    alignItems: 'center',
-                    backgroundColor: 'transparent'
-                  }}
-                  onPress={() => this.pickImage()}>
-                  <Ionicons
-                    name="ios-photos"
-                    style={{ color: "#fff", fontSize: 40 }}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{
-                    alignSelf: 'flex-end',
-                    alignItems: 'center',
-                    backgroundColor: 'transparent',
-                  }}
-                  onPress={() => this.takePicture()}
-                >
-                  <FontAwesome
-                    name="camera"
-                    style={{ color: "#fff", fontSize: 40 }}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{
-                    alignSelf: 'flex-end',
-                    alignItems: 'center',
-                    backgroundColor: 'transparent',
-                  }}
-                  onPress={() => this.handleCameraType()}
-                >
-                  <MaterialCommunityIcons
-                    name="camera-switch"
-                    style={{ color: "#fff", fontSize: 40 }}
-                  />
+              elevation: 8,
+            }}>
+              <Text style={{ fontSize: Math.min(rem * 17.5, wid * 31.5), fontWeight: 'bold', color: 'white', fontFamily: 'DroidB' }}>{global.name}</Text>
+            </View>
+          </View>
+          <View style={{ flex: 0.5, width: '100%' }}></View>
+          <View style={{ flex: 9, width: '90%' }}>
+            <View style={{ width: '100%', flex: 1, flexDirection: 'row' }}>
+              <View style={{
+                flex: 1, height: '95%',
+              }}>
+                <TouchableOpacity style={{
+                  shadowOffset: {
+                    width: 0,
+                    height: 4,
+                  },
+                  shadowOpacity: 0.30,
+                  shadowRadius: 3.65,
+
+                  elevation: 8,
+                }} onPress={() => this.props.navigation.navigate('Add')}>
+                  <LinearGradient
+                    colors={['#B1E2FE', '#86BEFF']}
+                    style={{ height: '100%', alignItems: 'center', borderRadius: 20, width: '100%', justifyContent: 'center', }}>
+                    <View style={{ flex: 0.75, width: '100%' }}></View>
+                    <View style={{ flex: 3, width: '100%' }}>
+                      <Image style={{ width: '100%', height: '100%' }} source={require('../assets/plus.png')} resizeMode='contain'></Image>
+                    </View>
+                    <View style={{ flex: 3, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                      <Text style={{ fontWeight: 'bold', fontSize: Math.min(12.5 * rem, 22.5 * wid) }}>Add Person</Text>
+                    </View>
+                  </LinearGradient>
                 </TouchableOpacity>
               </View>
-            </Camera>
-          </View>
-        );
-      }
-      else if(this.state.action == 'findpers'){
-        return (
-          <View style={{ flex: 1 }}>
-              <Spinner
-                visible={this.state.loading}
-                textContent={'Checking Age...'}
-                textStyle={styles.spinnerTextStyle}
-              />
-            <Camera style={{ flex: 1 }} type={this.state.cameraType} ref={ref => { this.camera = ref }}>
-              <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between", margin: 30 }}>
-                
-              <TouchableOpacity
-                  style={{
-                    alignSelf: 'flex-end',
-                    alignItems: 'center',
-                    backgroundColor: 'transparent'
-                  }}
-                  onPress={() => this.setState({camera: false})}>
-                  <Ionicons
-                    name="ios-arrow-back"
-                    style={{ color: "#fff", fontSize: 40 }}
-                  />
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={{
-                    alignSelf: 'flex-end',
-                    alignItems: 'center',
-                    backgroundColor: 'transparent'
-                  }}
-                  onPress={() => this.pickImage2()}>
-                  <Ionicons
-                    name="ios-photos"
-                    style={{ color: "#fff", fontSize: 40 }}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{
-                    alignSelf: 'flex-end',
-                    alignItems: 'center',
-                    backgroundColor: 'transparent',
-                  }}
-                  onPress={() => this.takePicture2()}
-                >
-                  <FontAwesome
-                    name="camera"
-                    style={{ color: "#fff", fontSize: 40 }}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{
-                    alignSelf: 'flex-end',
-                    alignItems: 'center',
-                    backgroundColor: 'transparent',
-                  }}
-                  onPress={() => this.handleCameraType()}
-                >
-                  <MaterialCommunityIcons
-                    name="camera-switch"
-                    style={{ color: "#fff", fontSize: 40 }}
-                  />
-                </TouchableOpacity>
-              </View>
-            </Camera>
-          </View>
-        ); 
-      }
-      else{
-        return (
-          <View style={{ flex: 1 }}>
-              <Spinner
-                visible={this.state.loading}
-                textContent={'Checking Age...'}
-                textStyle={styles.spinnerTextStyle}
-              />
-            <Camera style={{ flex: 1 }} type={this.state.cameraType} ref={ref => { this.camera = ref }}>
-              <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between", margin: 30 }}>
-                
-              <TouchableOpacity
-                  style={{
-                    alignSelf: 'flex-end',
-                    alignItems: 'center',
-                    backgroundColor: 'transparent'
-                  }}
-                  onPress={() => this.setState({camera: false})}>
-                  <Ionicons
-                    name="ios-arrow-back"
-                    style={{ color: "#fff", fontSize: 40 }}
-                  />
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={{
-                    alignSelf: 'flex-end',
-                    alignItems: 'center',
-                    backgroundColor: 'transparent'
-                  }}
-                  onPress={() => this.pickImage3()}>
-                  <Ionicons
-                    name="ios-photos"
-                    style={{ color: "#fff", fontSize: 40 }}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{
-                    alignSelf: 'flex-end',
-                    alignItems: 'center',
-                    backgroundColor: 'transparent',
-                  }}
-                  onPress={() => this.takePicture3()}
-                >
-                  <FontAwesome
-                    name="camera"
-                    style={{ color: "#fff", fontSize: 40 }}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{
-                    alignSelf: 'flex-end',
-                    alignItems: 'center',
-                    backgroundColor: 'transparent',
-                  }}
-                  onPress={() => this.handleCameraType()}
-                >
-                  <MaterialCommunityIcons
-                    name="camera-switch"
-                    style={{ color: "#fff", fontSize: 40 }}
-                  />
-                </TouchableOpacity>
-              </View>
-            </Camera>
-          </View>
-        ); 
-      }  
-    }
-    else{
-      return (
-          <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
-            <View style={styles.container}>
-              <View style={{ flex: 1, width: '85%', marginTop: getStatusBarHeight(), }}>
-                <View style={{
-                  width: '100%', height: '100%', backgroundColor: '#86BEFF', borderRadius: 20, justifyContent: 'center', alignItems: 'center', shadowOffset: {
+              <View style={{ flex: 0.15, height: '95%' }}></View>
+              <View style={{
+                flex: 1, height: '95%',
+              }}>
+                <TouchableOpacity style={{
+                  shadowOffset: {
                     width: 0,
                     height: 4,
                   },
@@ -573,190 +415,134 @@ export default class App extends React.Component {
 
                   elevation: 8,
                 }}>
-                  <Text style={{ fontSize: Math.min(rem * 17.5, wid * 31.5), fontWeight: 'bold', color: 'white', }}>Anirudh Adiraju</Text>
-                </View>
+                  <LinearGradient
+                    colors={['#B1E2FE', '#86BEFF']}
+                    style={{ height: '100%', alignItems: 'center', borderRadius: 20, width: '100%', justifyContent: 'center', }}>
+                    <View style={{ flex: 0.75, width: '100%' }}></View>
+                    <View style={{ flex: 3, width: '100%' }}>
+                      <Image style={{ width: '100%', height: '100%' }} source={require('../assets/user.png')} resizeMode='contain'></Image>
+                    </View>
+                    <View style={{ flex: 3, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                      <Text style={{ fontWeight: 'bold', fontSize: Math.min(12.5 * rem, 22.5 * wid) }}>Your People</Text>
+                    </View>
+                  </LinearGradient>
+                </TouchableOpacity>
               </View>
-              <View style={{ flex: 0.5, width: '100%' }}></View>
-              <View style={{ flex: 9, width: '90%' }}>
-                <View style={{ width: '100%', flex: 1, flexDirection: 'row' }}>
-                  <View style={{
-                    flex: 1, height: '95%',
-                  }}>
-                    <TouchableOpacity style={{
-                      shadowOffset: {
-                        width: 0,
-                        height: 4,
-                      },
-                      shadowOpacity: 0.30,
-                      shadowRadius: 3.65,
-
-                      elevation: 8,
-                    }} onPress = {() => this.openaddcam()}>
-                      <LinearGradient
-                        colors={['#B1E2FE', '#86BEFF']}
-                        style={{ height: '100%', alignItems: 'center', borderRadius: 20, width: '100%', justifyContent: 'center', }}>
-                        <View style={{ flex: 0.75, width: '100%' }}></View>
-                        <View style={{ flex: 3, width: '100%' }}>
-                          <Image style={{ width: '100%', height: '100%' }} source={require('../assets/plus.png')} resizeMode='contain'></Image>
-                        </View>
-                        <View style={{ flex: 3, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                          <Text style={{ fontWeight: 'bold', fontSize: Math.min(12.5 * rem, 22.5 * wid) }}>Add Person</Text>
-                        </View>
-                      </LinearGradient>
-                    </TouchableOpacity>
-                  </View>
-                  <View style={{ flex: 0.15, height: '95%' }}></View>
-                  <View style={{
-                    flex: 1, height: '95%',
-                  }}>
-                    <TouchableOpacity style={{
-                      shadowOffset: {
-                        width: 0,
-                        height: 4,
-                      },
-                      shadowOpacity: 0.30,
-                      shadowRadius: 3.65,
-
-                      elevation: 8,
-                    }} onPress = {() => this.openpersoncam()}>
-                      <LinearGradient
-                        colors={['#B1E2FE', '#86BEFF']}
-                        style={{ height: '100%', alignItems: 'center', borderRadius: 20, width: '100%', justifyContent: 'center', }}>
-                        <View style={{ flex: 0.75, width: '100%' }}></View>
-                        <View style={{ flex: 3, width: '100%' }}>
-                          <Image style={{ width: '100%', height: '100%' }} source={require('../assets/user.png')} resizeMode='contain'></Image>
-                        </View>
-                        <View style={{ flex: 3, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                          <Text style={{ fontWeight: 'bold', fontSize: Math.min(12.5 * rem, 22.5 * wid) }}>Find A Person</Text>
-                        </View>
-                      </LinearGradient>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                <View style={{ flex: 0.05 }}></View>
-                <View style={{ width: '100%', flex: 1, flexDirection: 'row' }}>
-                  <View style={{
-                    flex: 1, height: '95%',
-                  }}>
-                    <TouchableOpacity style={{
-                      shadowOffset: {
-                        width: 0,
-                        height: 4,
-                      },
-                      shadowOpacity: 0.30,
-                      shadowRadius: 3.65,
-
-                      elevation: 8,
-                    }}>
-                      <LinearGradient
-                        colors={['#B1E2FE', '#86BEFF']}
-                        style={{ height: '100%', alignItems: 'center', borderRadius: 20, width: '100%', justifyContent: 'center', }}>
-                        <View style={{ flex: 0.75, width: '100%' }}></View>
-                        <View style={{ flex: 3, width: '100%' }}>
-                          <Image style={{ width: '100%', height: '100%' }} source={require('../assets/org.png')} resizeMode='contain'></Image>
-                        </View>
-                        <View style={{ flex: 3, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                          <Text style={{ fontWeight: 'bold', fontSize: Math.min(12.5 * rem, 22.5 * wid) }}>Your People</Text>
-
-                        </View>
-                      </LinearGradient>
-                    </TouchableOpacity>
-                  </View>
-                  <View style={{ flex: 0.15, height: '95%' }}></View>
-                  <View style={{
-                    flex: 1, height: '95%',
-                  }}>
-                    <TouchableOpacity style={{
-                      shadowOffset: {
-                        width: 0,
-                        height: 4,
-                      },
-                      shadowOpacity: 0.30,
-                      shadowRadius: 3.65,
-
-                      elevation: 8,
-                    }} onPress = {() => this.openobjcam()}>
-                      <LinearGradient
-                        colors={['#B1E2FE', '#86BEFF']}
-                        style={{ height: '100%', alignItems: 'center', borderRadius: 20, width: '100%', justifyContent: 'center', }}>
-                        <View style={{ flex: 0.75, width: '100%' }}></View>
-                        <View style={{ flex: 3, width: '100%' }}>
-                          <Image style={{ width: '100%', height: '100%' }} source={require('../assets/cube.png')} resizeMode='contain'></Image>
-                        </View>
-                        <View style={{ flex: 3, width: '100%' }}>
-                          <Text style={{ fontWeight: 'bold', fontSize: Math.min(12.5 * rem, 22.5 * wid) }}>Find an Object</Text>
-
-                        </View>
-                      </LinearGradient>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                <View style={{ flex: 0.05 }}></View>
-                <View style={{ width: '100%', flex: 1, flexDirection: 'row' }}>
-                  <View style={{
-                    flex: 1, height: '95%',
-                  }}>
-                    <TouchableOpacity style={{
-                      shadowOffset: {
-                        width: 0,
-                        height: 4,
-                      },
-                      shadowOpacity: 0.30,
-                      shadowRadius: 3.65,
-
-                      elevation: 8,
-                    }}>
-                      <LinearGradient
-                        colors={['#B1E2FE', '#86BEFF']}
-                        style={{ height: '100%', alignItems: 'center', borderRadius: 20, width: '100%', justifyContent: 'center', }}>
-                        <View style={{ flex: 0.75, width: '100%' }}></View>
-                        <View style={{ flex: 3, width: '100%' }}>
-                          <Image style={{ width: '100%', height: '100%' }} source={require('../assets/puzzle.png')} resizeMode='contain'></Image>
-                        </View>
-                        <View style={{ flex: 3, width: '100%' }}>
-                          <Text style={{ fontWeight: 'bold', fontSize: Math.min(12.5 * rem, 22.5 * wid) }}>Memory Game</Text>
-
-                        </View>
-                      </LinearGradient>
-                    </TouchableOpacity>
-                  </View>
-                  <View style={{ flex: 0.15, height: '95%' }}></View>
-                  <View style={{
-                    flex: 1, height: '95%',
-                  }}>
-                    <TouchableOpacity style={{
-                      shadowOffset: {
-                        width: 0,
-                        height: 4,
-                      },
-                      shadowOpacity: 0.30,
-                      shadowRadius: 3.65,
-
-                      elevation: 8,
-                    }}>
-                      <LinearGradient
-                        colors={['#B1E2FE', '#86BEFF']}
-                        style={{ height: '100%', alignItems: 'center', borderRadius: 20, width: '100%', justifyContent: 'center', }}>
-                        <View style={{ flex: 0.75, width: '100%' }}></View>
-                        <View style={{ flex: 3, width: '100%' }}>
-                          <Image style={{ width: '100%', height: '100%' }} source={require('../assets/question.png')} resizeMode='contain'></Image>
-                        </View>
-                        <View style={{ flex: 3, width: '100%' }}>
-                          <Text style={{ fontWeight: 'bold', fontSize: Math.min(12.5 * rem, 22.5 * wid) }}>Person Trivia</Text>
-
-                        </View>
-                      </LinearGradient>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
-              <View style={{ flex: 0.5, width: '100%' }}></View>
             </View>
-          </TouchableWithoutFeedback>
-      );
-    }
+            <View style={{ flex: 0.05 }}></View>
+            <View style={{ width: '100%', flex: 1, flexDirection: 'row' }}>
+              <View style={{
+                flex: 1, height: '95%',
+              }}>
+                <TouchableOpacity style={{
+                  shadowOffset: {
+                    width: 0,
+                    height: 4,
+                  },
+                  shadowOpacity: 0.30,
+                  shadowRadius: 3.65,
 
-  }
+                  elevation: 8,
+                }}>
+                  <LinearGradient
+                    colors={['#B1E2FE', '#86BEFF']}
+                    style={{ height: '100%', alignItems: 'center', borderRadius: 20, width: '100%', justifyContent: 'center', }}>
+                    <View style={{ flex: 0.75, width: '100%' }}></View>
+                    <View style={{ flex: 3, width: '100%' }}>
+                      <Image style={{ width: '100%', height: '100%' }} source={require('../assets/org.png')} resizeMode='contain'></Image>
+                    </View>
+                    <View style={{ flex: 3, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                    </View>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </View>
+              <View style={{ flex: 0.15, height: '95%' }}></View>
+              <View style={{
+                flex: 1, height: '95%',
+              }}>
+                <TouchableOpacity style={{
+                  shadowOffset: {
+                    width: 0,
+                    height: 4,
+                  },
+                  shadowOpacity: 0.30,
+                  shadowRadius: 3.65,
+
+                  elevation: 8,
+                }}>
+                  <LinearGradient
+                    colors={['#B1E2FE', '#86BEFF']}
+                    style={{ height: '100%', alignItems: 'center', borderRadius: 20, width: '100%', justifyContent: 'center', }}>
+                    <View style={{ flex: 0.75, width: '100%' }}></View>
+                    <View style={{ flex: 3, width: '100%' }}>
+                      <Image style={{ width: '100%', height: '100%' }} source={require('../assets/cube.png')} resizeMode='contain'></Image>
+                    </View>
+                    <View style={{ flex: 3, width: '100%' }}></View>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View style={{ flex: 0.05 }}></View>
+            <View style={{ width: '100%', flex: 1, flexDirection: 'row' }}>
+              <View style={{
+                flex: 1, height: '95%',
+              }}>
+                <TouchableOpacity style={{
+                  shadowOffset: {
+                    width: 0,
+                    height: 4,
+                  },
+                  shadowOpacity: 0.30,
+                  shadowRadius: 3.65,
+
+                  elevation: 8,
+                }} onPress={() => this.props.navigation.navigate('Memory')}>
+                  <LinearGradient
+                    colors={['#B1E2FE', '#86BEFF']}
+                    style={{ height: '100%', alignItems: 'center', borderRadius: 20, width: '100%', justifyContent: 'center', }}>
+                    <View style={{ flex: 0.75, width: '100%' }}></View>
+                    <View style={{ flex: 3, width: '100%' }}>
+                      <Image style={{ width: '100%', height: '100%' }} source={require('../assets/puzzle.png')} resizeMode='contain'></Image>
+                    </View>
+                    <View style={{ flex: 3, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                      <Text style={{ fontWeight: 'bold', fontSize: Math.min(12.5 * rem, 22.5 * wid) }}>Match Game</Text>
+                    </View>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </View>
+              <View style={{ flex: 0.15, height: '95%' }}></View>
+              <View style={{
+                flex: 1, height: '95%',
+              }}>
+                <TouchableOpacity style={{
+                  shadowOffset: {
+                    width: 0,
+                    height: 4,
+                  },
+                  shadowOpacity: 0.30,
+                  shadowRadius: 3.65,
+
+                  elevation: 8,
+                }}>
+                  <LinearGradient
+                    colors={['#B1E2FE', '#86BEFF']}
+                    style={{ height: '100%', alignItems: 'center', borderRadius: 20, width: '100%', justifyContent: 'center', }}>
+                    <View style={{ flex: 0.75, width: '100%' }}></View>
+                    <View style={{ flex: 3, width: '100%' }}>
+                      <Image style={{ width: '100%', height: '100%' }} source={require('../assets/question.png')} resizeMode='contain'></Image>
+                    </View>
+                    <View style={{ flex: 3, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={{ fontWeight: 'bold', fontSize: Math.min(12.5 * rem, 22.5 * wid) }}>Trivia</Text>
+                    </View>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+          <View style={{ flex: 0.5, width: '100%' }}></View>
+        </View>
+      </TouchableWithoutFeedback>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -765,6 +551,7 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#DAF8FF'
   },
   spinnerTextStyle: {
     color: '#FFF',
