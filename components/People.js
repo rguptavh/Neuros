@@ -14,6 +14,9 @@ const rem = entireScreenHeight / 380;
 const entireScreenWidth = Dimensions.get('window').width;
 const wid = entireScreenWidth / 380;
 export default class App extends React.Component {
+  state = {
+    people: [{name: 'RG', id:'iocsjdfoids'}]
+  }
   constructor() {
     super();
     Text.defaultProps = Text.defaultProps || {};
@@ -124,7 +127,7 @@ export default class App extends React.Component {
               }} resizeMode="contain"></Image></View>
             <View style={{ width: '100%', flex: 6 }}>
               <FlatList style={{ width: '100%' }}
-                data={this.state.data}
+                data={this.state.people}
                 renderItem={this._renderItem}
                 keyExtractor={item => item.id}
               />
