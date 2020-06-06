@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, KeyboardAvoidingView, TouchableWithoutFeedback, Dimensions, Image, TextInput, TouchableOpacity, Keyboard, Alert } from 'react-native';
+import { StyleSheet, Text, View, KeyboardAvoidingView, TouchableWithoutFeedback, Dimensions, Image, TextInput, TouchableOpacity, Keyboard, AsyncStorage } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Spinner from 'react-native-loading-spinner-overlay';
 
@@ -23,6 +23,8 @@ export default class App extends React.Component {
     this.setState({ assetsLoaded: true });
   }
 
+
+
   signup = async () => {
     this.setState({ loading: true })
     if (this.state.firstname != '' && this.state.lastname != '') {
@@ -45,6 +47,9 @@ export default class App extends React.Component {
         if (res == '') {
           global.firstname = this.state.firstname
           global.lastname = this.state.lastname
+          if(AsyncStorage.getItem('people')==null){
+          AsyncStorage.setItem('people', [])
+        }
           this.props.navigation.replace('Main')
           return
         }
