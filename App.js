@@ -3,7 +3,9 @@ import { StyleSheet, Text, View, AppLoading } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack'
 import { createAppContainer } from 'react-navigation';
 import signup from './components/Signup';
-let logged = false
+import main from './components/Main';
+let signedup = true
+
 export default class App extends React.Component {
   state = {
     assetsLoaded: false,
@@ -30,9 +32,12 @@ export default class App extends React.Component {
         Signup: {
           screen:signup
         },
+        Main: {
+          screen:main
+        },
       },
         {
-          initialRouteName: logged ? 'Main' : 'Signup',
+          initialRouteName: signedup ? 'Main' : 'Signup',
           headerMode:'none'
         });
 
