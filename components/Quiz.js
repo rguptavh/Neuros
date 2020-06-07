@@ -8,7 +8,8 @@ import {
   Dimensions,
   ScrollView,
   Alert,
-  TouchableOpacity
+  TouchableOpacity,
+  AsyncStorage
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Animbutton from './Animbutton'
@@ -22,26 +23,43 @@ const entireScreenWidth = Dimensions.get('window').width;
 const wid = entireScreenWidth / 380;
 let arrnew = []
 var json
-let arr = ["Jack", "Bobby", "Rahul", "Anirudh"]
+
+var arr 
+
+/*async function getData() {
+  return  JSON.parse(await  AsyncStorage.getItem('people'));
+}
+
+(async () => {
+  arr = (await getData())
+
+})()*/
+console.log(global.people)
+
 
 function newCorrect() {
+  
+
+  console.log(arr[Math.floor(Math.random() * arr.length)])
+
   return arr[Math.floor(Math.random() * arr.length)];
 
 }
 function newIncorrect(correct) {
+
   let thing = correct
   var i
-  while (thing == correct) {
+  //while (thing == correct) {
     i = Math.floor(Math.random() * arr.length)
-    thing = arr[i]
-  }
+    thing = arr[i].name
+ // }
   arr.splice(i, 1)
 
   return thing
 }
 function newQuestion1() {
   const arr2 = [...arr]
-  let correctword = newCorrect()
+  let correctword = newCorrect().name
   json = {
     "correctoption": "option3",
     "options": {
@@ -57,7 +75,7 @@ function newQuestion1() {
 }
 function newQuestion2() {
   const arr2 = [...arr]
-  let correctword = newCorrect()
+  let correctword = newCorrect().name
   json = {
     "correctoption": "option2",
     "options": {
@@ -73,7 +91,7 @@ function newQuestion2() {
 }
 function newQuestion3() {
   const arr2 = [...arr]
-  let correctword = newCorrect()
+  let correctword = newCorrect().name
   json = {
     "correctoption": "option1",
     "options": {
@@ -88,7 +106,7 @@ function newQuestion3() {
   return json
 } function newQuestion4() {
   const arr2 = [...arr]
-  let correctword = newCorrect()
+  let correctword = newCorrect().name
   json = {
     "correctoption": "option4",
     "options": {
@@ -113,6 +131,9 @@ const jsonData = {
     }
   }
 }
+console.log(jsonData)
+
+
 export default class Quiz extends Component {
   constructor(props) {
     super(props);
@@ -151,6 +172,8 @@ export default class Quiz extends Component {
       this.setState({ countCheck: count })
       if (ans == this.state.correctoption) {
         this.score += 1
+        this.next()
+
         Alert.alert("Good Job! You got it correct");
       }
       else {
@@ -165,6 +188,7 @@ export default class Quiz extends Component {
 
     }
   }
+
   render() {
     let status = this.state.status
     let _this = this
@@ -206,19 +230,16 @@ export default class Quiz extends Component {
               {options[3]}
             </View>
           </View>
-          <View style = {{flex:0.6}}>
-            <Button
-              onPress={() => this.next()}
-              title="Next"
-              color="black"
-            />
-
-          </View>
+          
         </View>
       </View>
     );
   }
 }
+
+
+
+
 
 const styles = StyleSheet.create({
 

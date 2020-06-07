@@ -93,9 +93,11 @@ export default class App extends React.Component {
       res = await res.json();
       this.setState({ loading: false });
       if(!res.error){
-        console.log(res)
+       // console.log(res)
         var persons = JSON.parse(await AsyncStorage.getItem('people'));
         console.log(persons)
+        var t = AsyncStorage.getItem('people')
+        console.log(t)
         persons = persons == null ? [] : persons
         persons.push({name: this.state.name, memories: this.state.memories, photo: uri, id: res.persistedFaceId})
         AsyncStorage.setItem('people', JSON.stringify(persons))
@@ -116,7 +118,7 @@ export default class App extends React.Component {
 
   takePicture = async () => {
     if (this.camera) {
-      console.log('pressed papi');
+     // console.log('pressed papi');
       //this.setState({camera: false})
 
       let photo = await this.camera.takePictureAsync();
