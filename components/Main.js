@@ -523,7 +523,8 @@ export default class App extends React.Component {
                       <View style={{ flex: 3, width: '100%' }}>
                         <Image style={{ width: '100%', height: '100%' }} source={require('../assets/org.png')} resizeMode='contain'></Image>
                       </View>
-                      <View style={{ flex: 3, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                      <View style={{ flex: 3, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                      <Text style={{ fontWeight: 'bold', fontSize: Math.min(12.5 * rem, 22.5 * wid) }}>Detect Person</Text>
                       </View>
                     </LinearGradient>
                   </TouchableOpacity>
@@ -549,7 +550,9 @@ export default class App extends React.Component {
                       <View style={{ flex: 3, width: '100%' }}>
                         <Image style={{ width: '100%', height: '100%' }} source={require('../assets/cube.png')} resizeMode='contain'></Image>
                       </View>
-                      <View style={{ flex: 3, width: '100%' }}></View>
+                      <View style={{ flex: 3, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                      <Text style={{ fontWeight: 'bold', fontSize: Math.min(12.5 * rem, 22.5 * wid) }}>Detect Object</Text>
+                      </View>
                     </LinearGradient>
                   </TouchableOpacity>
                 </View>

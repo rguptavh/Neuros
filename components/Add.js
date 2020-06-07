@@ -16,10 +16,10 @@ const rem = entireScreenHeight / 380;
 const entireScreenWidth = Dimensions.get('window').width;
 const wid = entireScreenWidth / 380;
 var first = true
+var uri = null
 export default class App extends React.Component {
   state = {
-    firstname: '',
-    lastname: '',
+    name: '',
     loading: false,
     memories: [{ index: 0, memory:'', add: false }, { index: 1, memory: '', add: true }],
     camera: false,
@@ -77,6 +77,7 @@ export default class App extends React.Component {
     })
   }
   addperson = async(papi) => {
+
     var listid = 'bruhbruh';
     try {
       let res = await fetch('https://eastus.api.cognitive.microsoft.com/face/v1.0/facelists/'+listid+'/persistedFaces?detectionModel=detection_01', {
@@ -89,16 +90,21 @@ export default class App extends React.Component {
           papi,
       
       });
-      this.setState({ loading: false });
-
       res = await res.json();
-      if(res.length!=0){
+      this.setState({ loading: false });
+      if(!res.error){
         console.log(res)
-        this.setState({camera: false});
-
+        var persons = JSON.parse(await AsyncStorage.getItem('people'));
+        console.log(persons)
+        persons = persons == null ? [] : persons
+        persons.push({name: this.state.name, memories: this.state.memories, photo: uri, id: res.persistedFaceId})
+        AsyncStorage.setItem('people', JSON.stringify(persons))
+      }
+      else if (res.error.message == 'No face detected in the image.'){
+        setTimeout(() => {  alert("No face detected in the photo. Please retake"); }, 100);
       }
       else{
-        alert("No face detected in the photo. Please retake");
+        setTimeout(() => {  alert("An error has occurred"); }, 100);
       }
 
     } catch (e) {
@@ -107,11 +113,11 @@ export default class App extends React.Component {
 
   }
 
+
   takePicture = async () => {
     if (this.camera) {
       console.log('pressed papi');
       //this.setState({camera: false})
-      this.setState({ loading: true });
 
       let photo = await this.camera.takePictureAsync();
       const manipResult = await ImageManipulator.manipulateAsync(
@@ -119,16 +125,8 @@ export default class App extends React.Component {
         [],
         { compress: 0.75, format: ImageManipulator.SaveFormat.JPEG }
       );
-
-
-      this.uriToBlob(manipResult.uri).then((blob)  => {
-          global.papito = blob;
-          console.log(JSON.stringify(global.papito))
-          this.addperson(blob);
-
-      }).catch((error) => {
-        throw error;
-      }); 
+        this.setState({photo: {uri: photo.uri}, camera : false})
+      uri = manipResult.uri
       //console.log(JSON.stringify(global.papito))
 
     }
@@ -139,29 +137,42 @@ export default class App extends React.Component {
       mediaTypes: ImagePicker.MediaTypeOptions.Images
     });
     if (!result.cancelled) {
-      this.setState({ loading: true });
 
       const manipResult = await ImageManipulator.manipulateAsync(
         result.uri,
         [],
         { compress: 0.75, format: ImageManipulator.SaveFormat.JPEG }
       );
-        this.uriToBlob(manipResult.uri).then((blob)  => {
-          global.papito = blob;
-          console.log(JSON.stringify(global.papito))
-          this.addperson(blob);
+      this.setState({photo: {uri: result.uri}, camera : false})
 
-      }).catch((error) => {
-        throw error;
-      }); 
+      uri = manipResult.uri
     }
   }
 
   addition = () =>{
-    var persons = AsyncStorage.getItem('people');
+    var empty = false // check if any memory is empty
+    for (const item of this.state.memories){
+      if (!item.add && item.memory == ''){
+        empty = true
+        break
+      }
+    }
+    if (this.state.name != "" && uri != null && !empty){
+    this.setState({ loading: true });
+    console.log(uri)
+    this.uriToBlob(uri).then((blob)  => {
+      console.log(JSON.stringify(global.papito))
+      this.addperson(blob);
 
+  }).catch((error) => {
+    throw error;
+  }); 
 
   }
+  else{
+    alert("Please fill all fields")
+  }
+}
 
 
 
@@ -324,7 +335,7 @@ export default class App extends React.Component {
                   placeholder="Full Name"
                   placeholderTextColor="#86BEFF"
                   keyboardType={Platform.OS === 'ios' ? 'ascii-capable' : 'visible-password'}
-                  onChangeText={(value) => this.setState({ firstname: value })}
+                  onChangeText={(value) => this.setState({ name: value })}
                   value={this.state.firstname}
 
                 />
