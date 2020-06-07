@@ -99,7 +99,8 @@ export default class App extends React.Component {
   }
 
   findperson = async(papi) => {
-    var listid = 'bruhbruh';
+    var listid = global.firstname + global.lastname;
+    listid = listid.toLowerCase();
     try {
       let res = await fetch('https://eastus.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&recognitionModel=recognition_01&detectionModel=detection_01', {
         method: 'POST',
@@ -133,6 +134,17 @@ export default class App extends React.Component {
         pons = await pons.json();
         console.log('i');
         console.log(pons);
+        if (pons.error){
+          if (pons.error.message == 'Face list is empty.'){
+          this.setState({ loading: false, camera: false });
+          setTimeout(() => {  alert("You don't have any people added, please add a face to your database.")}, 100);
+          }
+          else{
+            this.setState({ loading: false, camera: false });
+            setTimeout(() => {  alert(pons.error.message)}, 100);
+          }
+          return
+        }
         if(pons.length!=0){
           console.log(global.people)
           for (const item of global.people){

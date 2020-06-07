@@ -48,10 +48,9 @@ export default class App extends React.Component {
 
         <View style={styles.container}>
             <View style={{ flex: 1, width: '90%', alignItems: 'center',  marginTop: getStatusBarHeight() + wid*10 }}>
-              <Text>Added people</Text>
-            </View>
+            <Text style = {{fontFamily:'DroidB', fontSize:Math.min(rem*20,wid*36), color:'#86BEFF'}}>Added People</Text></View>
             <View style={{ width: '100%', flex: 6, justifyContent: 'center', alignItems: 'center', }}>
-              <Text style={{ fontSize: 25 * wid, color: 'black', fontFamily: 'WSB' }}>Please add your first person!</Text>
+              <Text style={{ fontSize: 25 * wid, color: 'black', fontFamily: 'DroidB' }}>Please add your first person!</Text>
             </View>
             <View style={{
               width: '73%',
@@ -63,7 +62,7 @@ export default class App extends React.Component {
                   height: entireScreenWidth * 0.73 * 276 / 1096,
                   width: '100%',
                 }}
-                onPress={onPress}
+                onPress={() => this.props.navigation.navigate('Main')}
                 disabled={this.state.loading}
 
               >
