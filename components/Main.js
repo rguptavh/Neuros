@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableWithoutFeedback, Dimensions, Image, TextInput, TouchableOpacity, Keyboard } from 'react-native';
+import { StyleSheet, Text, View, TouchableWithoutFeedback, Dimensions, Image, TextInput, TouchableOpacity, Keyboard, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import * as ImagePicker from 'expo-image-picker';
@@ -17,8 +17,6 @@ const entireScreenWidth = Dimensions.get('window').width;
 const wid = entireScreenWidth / 380;
 export default class App extends React.Component {
   state = {
-    firstname: '',
-    lastname: '',
     loading: false,
     cameraType: Camera.Constants.Type.front,
     camera: false,
@@ -94,8 +92,10 @@ export default class App extends React.Component {
       }
     });
     pons = await pons.json();
-    console.log('i');
-    console.log(pons);
+    if (pons.message == 'word not found'){
+      return 'No definition found'
+    }
+    return pons.definitions[0].definition
   }
 
   findperson = async(papi) => {
@@ -134,17 +134,28 @@ export default class App extends React.Component {
         console.log('i');
         console.log(pons);
         if(pons.length!=0){
-          this.setState({ loading: false });
+          console.log(global.people)
+          for (const item of global.people){
+            if (item.id == res.persistedFaceId){
+              this.setState({ loading: false });
+              global.selected = item
+              this.props.navigation.navigate('Profile')
+              return
+            }
+          }
           this.setState({camera: false});
+          setTimeout(() => {  alert('A match was found, however you do not have a profile of them.') }, 100);
         }
         else{
-          alert("This person is not in your list of people. Please retake the picture or Add them to the list if you wish to recognize them in the future.");
+          this.setState({ loading: false, camera: false });
+          setTimeout(() => {  alert("This person is not in your list of people. Please retake the picture or add them to the list if you wish to recognize them in the future.");}, 100);
         }
 
 
       }
       else{
-        alert("No face found in the photo. Please retake.");
+        this.setState({ loading: false, camera: false });
+          setTimeout(() => {  alert("No face found in the photo. Please retake.");}, 100);
       }
 
     } catch (e) {
@@ -166,6 +177,30 @@ export default class App extends React.Component {
     
     });
     pons = await pons.json();
+    var message = ""
+    if (pons.objects.length != 0){
+      let set = new Set()
+      for (const item of pons.objects){
+        set.add(item.object)
+      }
+      let first = true
+      for (const object of set){
+        if (first){
+          first = false
+        }
+        else{
+          message += '\n\n'
+        }
+        var definition = await this.define(object)
+        message += 'Object: ' + object + '\n' + 'Definition: ' + definition
+      }
+      this.setState({camera: false, loading:false})
+      setTimeout(() => {  Alert.alert('Objects Found', message) }, 100);
+    }
+    else{
+      this.setState({camera: false, loading:false})
+      setTimeout(() => {  alert('No items found') }, 100);
+    }
     console.log(pons); 
   }
 
@@ -173,7 +208,7 @@ export default class App extends React.Component {
     if (this.camera) {
       console.log('pressed papi');
       //this.setState({camera: false})
-      this.setState({ loading: true });
+      this.setState({ loading: true, message:'Scanning for match...' });
 
       let photo = await this.camera.takePictureAsync();
       const manipResult = await ImageManipulator.manipulateAsync(
@@ -200,7 +235,7 @@ export default class App extends React.Component {
       mediaTypes: ImagePicker.MediaTypeOptions.Images
     });
     if (!result.cancelled) {
-      this.setState({ loading: true });
+      this.setState({ loading: true, message:'Scanning for match...' });
 
       const manipResult = await ImageManipulator.manipulateAsync(
         result.uri,
@@ -221,7 +256,7 @@ export default class App extends React.Component {
     if (this.camera) {
       console.log('pressed papi');
       //this.setState({camera: false})
-      this.setState({ loading: true });
+      this.setState({ loading: true, message:'Scanning for objects...' });
 
       let photo = await this.camera.takePictureAsync();
       const manipResult = await ImageManipulator.manipulateAsync(
@@ -248,7 +283,7 @@ export default class App extends React.Component {
       mediaTypes: ImagePicker.MediaTypeOptions.Images
     });
     if (!result.cancelled) {
-      this.setState({ loading: true });
+      this.setState({ loading: true, message:'Scanning for objects...' });
 
       const manipResult = await ImageManipulator.manipulateAsync(
         result.uri,
@@ -301,10 +336,14 @@ export default class App extends React.Component {
 
   render() {
     if(this.state.camera){
-      if(this.state.action=='findpers'){
         return (
           <View style={{ flex: 1 }}>
             <Camera style={{ flex: 1 }} type={this.state.cameraType} ref={ref => { this.camera = ref }}>
+            <Spinner
+              visible={this.state.loading}
+              textContent={this.state.message}
+              textStyle={styles.spinnerTextStyle}
+            />
               <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between", margin: 30 }}>
                 
               <TouchableOpacity
@@ -326,7 +365,7 @@ export default class App extends React.Component {
                     alignItems: 'center',
                     backgroundColor: 'transparent'
                   }}
-                  onPress={() => this.pickImage2()}>
+                  onPress={() => this.state.action=='findpers' ? this.pickImage2() : this.pickImage3()}>
                   <Ionicons
                     name="ios-photos"
                     style={{ color: "#fff", fontSize: 40 }}
@@ -338,7 +377,7 @@ export default class App extends React.Component {
                     alignItems: 'center',
                     backgroundColor: 'transparent',
                   }}
-                  onPress={() => this.takePicture2()}
+                  onPress={() => this.state.action=='findpers' ? this.takePicture2() : this.takePicture3()}
                 >
                   <FontAwesome
                     name="camera"
@@ -362,69 +401,6 @@ export default class App extends React.Component {
             </Camera>
           </View>
         );
-      }
-      else{
-        return (
-          <View style={{ flex: 1 }}>
-            <Camera style={{ flex: 1 }} type={this.state.cameraType} ref={ref => { this.camera = ref }}>
-              <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between", margin: 30 }}>
-                
-              <TouchableOpacity
-                  style={{
-                    alignSelf: 'flex-end',
-                    alignItems: 'center',
-                    backgroundColor: 'transparent'
-                  }}
-                  onPress={() => this.setState({camera: false})}>
-                  <Ionicons
-                    name="ios-arrow-back"
-                    style={{ color: "#fff", fontSize: 40 }}
-                  />
-                </TouchableOpacity>
-  
-                <TouchableOpacity
-                  style={{
-                    alignSelf: 'flex-end',
-                    alignItems: 'center',
-                    backgroundColor: 'transparent'
-                  }}
-                  onPress={() => this.pickImage3()}>
-                  <Ionicons
-                    name="ios-photos"
-                    style={{ color: "#fff", fontSize: 40 }}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{
-                    alignSelf: 'flex-end',
-                    alignItems: 'center',
-                    backgroundColor: 'transparent',
-                  }}
-                  onPress={() => this.takePicture3()}
-                >
-                  <FontAwesome
-                    name="camera"
-                    style={{ color: "#fff", fontSize: 40 }}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{
-                    alignSelf: 'flex-end',
-                    alignItems: 'center',
-                    backgroundColor: 'transparent',
-                  }}
-                  onPress={() => this.handleCameraType()}
-                >
-                  <MaterialCommunityIcons
-                    name="camera-switch"
-                    style={{ color: "#fff", fontSize: 40 }}
-                  />
-                </TouchableOpacity>
-              </View>
-            </Camera>
-          </View>
-        );
-      }
     }
     else{
       return (
@@ -486,7 +462,7 @@ export default class App extends React.Component {
                     shadowRadius: 3.65,
 
                     elevation: 8,
-                  }}>
+                  }}onPress={() => this.props.navigation.navigate('People')}>
                     <LinearGradient
                       colors={['#B1E2FE', '#86BEFF']}
                       style={{ height: '100%', alignItems: 'center', borderRadius: 20, width: '100%', justifyContent: 'center', }}>
@@ -495,7 +471,7 @@ export default class App extends React.Component {
                         <Image style={{ width: '100%', height: '100%' }} source={require('../assets/user.png')} resizeMode='contain'></Image>
                       </View>
                       <View style={{ flex: 3, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: Math.min(12.5 * rem, 22.5 * wid) }}>Your People</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: Math.min(12.5 * rem, 22.5 * wid) }}>Added People</Text>
                       </View>
                     </LinearGradient>
                   </TouchableOpacity>

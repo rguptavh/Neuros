@@ -93,14 +93,14 @@ export default class App extends React.Component {
       res = await res.json();
       this.setState({ loading: false });
       if(!res.error){
-       // console.log(res)
-        var persons = JSON.parse(await AsyncStorage.getItem('people'));
-        console.log(persons)
-        var t = AsyncStorage.getItem('people')
-        console.log(t)
+       // console.log(JSON.stringify(res) + " res")
+        var persons = global.people
         persons = persons == null ? [] : persons
         persons.push({name: this.state.name, memories: this.state.memories, photo: uri, id: res.persistedFaceId})
+        global.people = persons
         AsyncStorage.setItem('people', JSON.stringify(persons))
+        this.props.navigation.navigate('Main')
+        setTimeout(() => {  alert("Successfully added!"); }, 100);
       }
       else if (res.error.message == 'No face detected in the image.'){
         setTimeout(() => {  alert("No face detected in the photo. Please retake"); }, 100);
@@ -161,9 +161,9 @@ export default class App extends React.Component {
     }
     if (this.state.name != "" && uri != null && !empty){
     this.setState({ loading: true });
-    console.log(uri)
+  //  console.log(uri)
     this.uriToBlob(uri).then((blob)  => {
-      console.log(JSON.stringify(global.papito))
+   //   console.log(JSON.stringify(global.papito))
       this.addperson(blob);
 
   }).catch((error) => {
@@ -190,13 +190,13 @@ export default class App extends React.Component {
     }
     if (item.add) {
       return (
-        <View style={{ height: rem * 35, width: '100%', marginTop: rem * 7 }}>
+        <View style={{ height: rem * 25, width: '100%', marginTop: rem * 7 }}>
           <TouchableOpacity style={{ height: '60%', width: '100%', flexDirection: 'row', alignItems: 'center', }} onPress={this.addmemory}>
             <Image style={{ flex: 0.75, width: '100%', height: '100%', }} source={require('../assets/plus.png')} resizeMode='contain'>
             </Image>
             <View style={{ flex: 0.2 }}></View>
             <View style={{ flex: 3 }}>
-              <Text style={{ fontFamily: 'Droid', fontSize: rem * 15 }}>Add Memory</Text>
+              <Text style={{ fontFamily: 'Droid', fontSize: rem * 12 }}>Add Memory</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -209,11 +209,11 @@ export default class App extends React.Component {
           <Swipeable rightButtons={rightButtons} rightButtonWidth={entireScreenWidth / 5} bounceOnMount={f}>
             <View style={{ width: '100%', flexDirection: 'row', }}>
               <View style={{ flex: 1, borderWidth: 2, borderRadius: 20, justifyContent: 'center', paddingTop: rem * 2, paddingBottom: rem * 2 }}>
-                <TextInput style={{ flex: 1, width: '90%', marginLeft: '5%', fontFamily: 'Droid', fontSize: rem * 15 }} multiline={true} placeholder="Memory" onChangeText={(value) => {
+                <TextInput style={{ flex: 1, width: '90%', marginLeft: '5%', fontFamily: 'Droid', fontSize: rem * 12 }} multiline={true} placeholder="Memory" onChangeText={(value) => {
                   var temp = this.state.memories;
                   temp[item.index]["memory"] = value;
                   this.setState({ items: temp })
-                  console.log(this.state.memories)
+              //    console.log(this.state.memories)
                 }}></TextInput>
               </View>
             </View>
@@ -317,7 +317,8 @@ export default class App extends React.Component {
                 }
                 console.log(this.state.hasPermission)
                 if (this.state.hasPermission) {
-                  console.log('hii')
+              //    console.log('hii')
+                  this.setState({name: '', memories: [{ index: 0, memory:'', add: false }, { index: 1, memory: '', add: true }]})
                   this.setState({ camera: true })
                 }
                 else {
@@ -338,7 +339,7 @@ export default class App extends React.Component {
                   placeholderTextColor="#86BEFF"
                   keyboardType={Platform.OS === 'ios' ? 'ascii-capable' : 'visible-password'}
                   onChangeText={(value) => this.setState({ name: value })}
-                  value={this.state.firstname}
+                  value={this.state.name}
 
                 />
               </View>
