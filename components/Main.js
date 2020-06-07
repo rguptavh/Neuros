@@ -598,7 +598,7 @@ export default class App extends React.Component {
                     shadowRadius: 3.65,
 
                     elevation: 8,
-                  }} onPress = {() => this.define('mouse')}>
+                  }} onPress = {() => this.props.navigation.navigate('Quiz')}>
                     <LinearGradient
                       colors={['#B1E2FE', '#86BEFF']}
                       style={{ height: '100%', alignItems: 'center', borderRadius: 20, width: '100%', justifyContent: 'center', }}>
