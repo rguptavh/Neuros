@@ -35,14 +35,13 @@ export default class Quiz extends Component {
     var arr = global.people
 
 
-    
+
     //function to retrieve data
-   
-     
-     //function call
-     function randQustion()
-     {
-      switch(Math.floor(Math.random() * 4) + 1) {
+
+
+    //function call
+    function randQustion() {
+      switch (Math.floor(Math.random() * 4) + 1) {
         case 1:
           return newQuestion1()
         case 2:
@@ -54,15 +53,15 @@ export default class Quiz extends Component {
           return newQuestion3()
         default:
           return "nothing"
-      } 
-     }
+      }
+    }
     function newCorrect() {
-    
+
       return arr[Math.floor(Math.random() * arr.length)];
-    
+
     }
     function newIncorrect(correct) {
-    
+
       let thing = correct
       var i
       while (thing == correct) {
@@ -70,14 +69,14 @@ export default class Quiz extends Component {
         thing = arr[i].name
       }
       arr.splice(i, 1)
-    
+
       return thing
     }
     function newQuestion1() {
       const arr2 = [...arr]
-      let corr  = newCorrect()
+      let corr = newCorrect()
 
-      let correctword  = corr.name
+      let correctword = corr.name
       json = {
         "correctoption": "option3",
         "options": {
@@ -86,16 +85,16 @@ export default class Quiz extends Component {
           "option3": correctword,
           "option4": newIncorrect(correctword)
         },
-        "question":corr.photo
+        "question": corr.photo
       }
       arr = arr2
       return json
     }
     function newQuestion2() {
       const arr2 = [...arr]
-      let corr  = newCorrect()
+      let corr = newCorrect()
 
-      let correctword  = corr.name
+      let correctword = corr.name
       json = {
         "correctoption": "option2",
         "options": {
@@ -104,16 +103,16 @@ export default class Quiz extends Component {
           "option3": newIncorrect(correctword),
           "option4": newIncorrect(correctword)
         },
-        "question":corr.photo    
+        "question": corr.photo
       }
       arr = arr2
       return json
     }
     function newQuestion3() {
       const arr2 = [...arr]
-      let corr  = newCorrect()
+      let corr = newCorrect()
 
-      let correctword  = corr.name
+      let correctword = corr.name
       json = {
         "correctoption": "option1",
         "options": {
@@ -122,14 +121,15 @@ export default class Quiz extends Component {
           "option3": newIncorrect(correctword),
           "option4": newIncorrect(correctword)
         },
-        "question":corr.photo      }
+        "question": corr.photo
+      }
       arr = arr2
       return json
     } function newQuestion4() {
       const arr2 = [...arr]
-      let corr  = newCorrect()
+      let corr = newCorrect()
 
-      let correctword  = corr.name     
+      let correctword = corr.name
       json = {
         "correctoption": "option4",
         "options": {
@@ -138,7 +138,7 @@ export default class Quiz extends Component {
           "option3": newIncorrect(correctword),
           "option4": correctword
         },
-        "question":corr.photo      
+        "question": corr.photo
       }
       arr = arr2
       return json
@@ -154,7 +154,7 @@ export default class Quiz extends Component {
         }
       }
     }
-    
+
     const jdata = jsonData.quiz.quiz1
     arrnew = Object.keys(jdata).map(function (k) { return jdata[k] });
     this.state = {
@@ -176,7 +176,7 @@ export default class Quiz extends Component {
   next() {
     if (this.qno < arrnew.length - 1) {
       this.qno++
-      this.setState({ countCheck: 0, question: arrnew[this.qno].question, options: arrnew[this.qno].options, correctoption: arrnew[this.qno].correctoption, status: false, photo : arrnew[this.qno].photos })
+      this.setState({ countCheck: 0, question: arrnew[this.qno].question, options: arrnew[this.qno].options, correctoption: arrnew[this.qno].correctoption, status: false, photo: arrnew[this.qno].photos })
     } else {
       this.props.quizFinish(this.score * 100 / 5)
     }
@@ -218,26 +218,21 @@ export default class Quiz extends Component {
     });
 
     return (
- 
-        <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginTop: getStatusBarHeight() + rem*5 }}>
 
-          <View style={styles.oval} >
-            <Text style={styles.welcome}>
-              {"Who is this?"}
-            </Text>
-          </View>
-          <View style={{ flex: 6 }}>
+      <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginTop: getStatusBarHeight() + rem * 5 }}>
 
-          <View style = {{flex:1}}></View>
-          <View style={styles.container}>
-                   <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center', }}>
-              <View style={{ width: entireScreenHeight / 2 * 1 * 0.85, height: '100%', marginTop: '1%', }}>
-                <Image style={{ width: '100%', height: '100%' }} source={{uri :this.state.question}} resizeMode='contain'></Image>
-              </View>
-            </View>
-          </View>
+        <View style={styles.oval} >
+          <Text style={styles.welcome}>
+            {"Who is this?"}
+          </Text>
+        </View>
+        <View style = {{flex:0.5}}></View>
+        <View style={{ flex: 6, width:'90%' }}>
+        <Image style={{ width: '100%', height: '100%' }} source={{ uri: this.state.question }} resizeMode='contain'></Image>
+        </View>
+          <View style = {{flex:0.5}}></View>
           <View style={{ flex: 1, flexDirection: 'row' }}>
-         
+
             <View style={{ flex: 1 }}>
               {options[0]}
             </View>
@@ -253,9 +248,8 @@ export default class Quiz extends Component {
               {options[3]}
             </View>
           </View>
-          
+
         </View>
-      </View>
     );
   }
 }
@@ -283,6 +277,7 @@ const styles = StyleSheet.create({
     fontSize: Math.min(rem * 15, wid * 36),
     margin: 15,
     color: "white",
+    fontFamily:'DroidB'
   },
   instructions: {
     textAlign: 'center',
