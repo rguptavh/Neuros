@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
 import {
   Text,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Dimensions
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+const { width, height } = Dimensions.get('window')
+const entireScreenHeight = Dimensions.get('window').height;
+const rem = entireScreenHeight / 380;
+const entireScreenWidth = Dimensions.get('window').width;
+const wid = entireScreenWidth / 380;
 export default class Animbutton extends Component {
   constructor(props) {
      super(props);
@@ -52,8 +58,8 @@ export default class Animbutton extends Component {
   render() {
     return (
       <TouchableWithoutFeedback onPress={() => this._onPress()}>
-        <Animatable.View ref="view" style={{ margin:10, paddingTop :10, paddingBottom: 10, paddingRight: 20, paddingLeft: 20, backgroundColor: this.state.status ? this.props.onColor : "green", borderRadius:20}}>
-          <Text style={{color: this.state.status ? "white" : "white", fontWeight: "bold"}}>{this.props.text}</Text>
+        <Animatable.View ref="view" style={{ paddingTop :10, paddingBottom: 10, paddingRight: width/50, paddingLeft: width/50, backgroundColor: "#86BEFF", borderRadius:20, alignItems:'center'}}>
+          <Text style={{color: this.state.status ? "white" : "white", fontWeight: "bold", fontSize:Math.min(10*rem,36*wid)}}>{this.props.text}</Text>
         </Animatable.View>
       </TouchableWithoutFeedback>
     );
