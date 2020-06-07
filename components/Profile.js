@@ -78,25 +78,26 @@ export default class App extends React.Component {
                 keyExtractor={item => "" + item.index}
               />
             </View>
-            <View style={{ flex: 1, alignItems: 'center', width: '100%', justifyContent: 'flex-end' }}>
-              <View style={{ width: '100%', height: '90%', alignItems: 'center' }}>
-                <TouchableOpacity style={{
-                  height: '44%', width: '60%', borderRadius: 30, alignItems: 'center', justifyContent: 'center', shadowOffset: {
-                    width: 0,
-                    height: 4,
-                  },
-                  shadowOpacity: 0.30,
-                  shadowRadius: 3.65,
+            <View style = {{width:'100%', flex: 1, alignItems:'center'}}>
+            <TouchableOpacity
+                style={{
+                  flex: 1,
+                  width: entireScreenHeight / 8 * 0.76,
+                  marginTop:'4%'
+                }}
+                onPress={() => this.props.navigation.navigate('Main')}
+                disabled={this.state.loading}
 
-                  elevation: 8,
-                }} onPress={() => this.addition()}>
-                  <View
-                    style={{ height: '100%', alignItems: 'center', borderRadius: 30, width: '100%', justifyContent: 'center', backgroundColor: '#93C7FF' }}>
-                    <Text style={{ color: 'white', fontSize: Math.min(25 * rem, 45 * wid), textAlign: 'center', fontWeight: 'bold', fontFamily: 'DroidB' }}>Submit</Text>
-                  </View>
-                </TouchableOpacity>
+              >
+                <Image source={require('../assets/backbut.png')} style={{
+                  height: '100%',
+                  width: '100%',
+                  flex: 1
+
+
+                }} resizeMode="contain"></Image>
+              </TouchableOpacity>
               </View>
-            </View>
           </View>
       </KeyboardAvoidingView >
     );

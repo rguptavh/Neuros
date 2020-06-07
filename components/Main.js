@@ -134,11 +134,20 @@ export default class App extends React.Component {
         console.log('i');
         console.log(pons);
         if(pons.length!=0){
-          this.setState({ loading: false });
+          console.log(global.people)
+          for (const item of global.people){
+            if (item.id == res.persistedFaceId){
+              this.setState({ loading: false });
+              global.selected = item
+              this.props.navigation.navigate('Profile')
+              return
+            }
+          }
           this.setState({camera: false});
+          setTimeout(() => {  alert('A match was found, however you do not have a profile of them.') }, 100);
         }
         else{
-          alert("This person is not in your list of people. Please retake the picture or Add them to the list if you wish to recognize them in the future.");
+          alert("This person is not in your list of people. Please retake the picture or add them to the list if you wish to recognize them in the future.");
         }
 
 
@@ -173,7 +182,7 @@ export default class App extends React.Component {
     if (this.camera) {
       console.log('pressed papi');
       //this.setState({camera: false})
-      this.setState({ loading: true });
+      this.setState({ loading: true, message:'Scanning for match...' });
 
       let photo = await this.camera.takePictureAsync();
       const manipResult = await ImageManipulator.manipulateAsync(
@@ -200,7 +209,7 @@ export default class App extends React.Component {
       mediaTypes: ImagePicker.MediaTypeOptions.Images
     });
     if (!result.cancelled) {
-      this.setState({ loading: true });
+      this.setState({ loading: true, message:'Scanning for match...' });
 
       const manipResult = await ImageManipulator.manipulateAsync(
         result.uri,
@@ -221,7 +230,7 @@ export default class App extends React.Component {
     if (this.camera) {
       console.log('pressed papi');
       //this.setState({camera: false})
-      this.setState({ loading: true });
+      this.setState({ loading: true, message:'Scanning for objects...' });
 
       let photo = await this.camera.takePictureAsync();
       const manipResult = await ImageManipulator.manipulateAsync(
@@ -248,7 +257,7 @@ export default class App extends React.Component {
       mediaTypes: ImagePicker.MediaTypeOptions.Images
     });
     if (!result.cancelled) {
-      this.setState({ loading: true });
+      this.setState({ loading: true, message:'Scanning for objects...' });
 
       const manipResult = await ImageManipulator.manipulateAsync(
         result.uri,
@@ -305,6 +314,11 @@ export default class App extends React.Component {
         return (
           <View style={{ flex: 1 }}>
             <Camera style={{ flex: 1 }} type={this.state.cameraType} ref={ref => { this.camera = ref }}>
+            <Spinner
+              visible={this.state.loading}
+              textContent={this.state.message}
+              textStyle={styles.spinnerTextStyle}
+            />
               <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between", margin: 30 }}>
                 
               <TouchableOpacity
