@@ -8,7 +8,9 @@ import {
   Dimensions,
   ScrollView,
   Alert,
-  TouchableOpacity
+  TouchableOpacity,
+  AsyncStorage,
+  Image
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Animbutton from './Animbutton'
@@ -22,103 +24,137 @@ const entireScreenWidth = Dimensions.get('window').width;
 const wid = entireScreenWidth / 380;
 let arrnew = []
 var json
-let arr = ["Jack", "Bobby", "Rahul", "Anirudh"]
 
-function newCorrect() {
-  return arr[Math.floor(Math.random() * arr.length)];
 
-}
-function newIncorrect(correct) {
-  let thing = correct
-  var i
-  while (thing == correct) {
-    i = Math.floor(Math.random() * arr.length)
-    thing = arr[i]
-  }
-  arr.splice(i, 1)
 
-  return thing
-}
-function newQuestion1() {
-  const arr2 = [...arr]
-  let correctword = newCorrect()
-  json = {
-    "correctoption": "option3",
-    "options": {
-      "option1": newIncorrect(correctword),
-      "option2": newIncorrect(correctword),
-      "option3": correctword,
-      "option4": newIncorrect(correctword)
-    },
-    "question": "Who is this person?"
-  }
-  arr = arr2
-  return json
-}
-function newQuestion2() {
-  const arr2 = [...arr]
-  let correctword = newCorrect()
-  json = {
-    "correctoption": "option2",
-    "options": {
-      "option1": newIncorrect(correctword),
-      "option2": correctword,
-      "option3": newIncorrect(correctword),
-      "option4": newIncorrect(correctword)
-    },
-    "question": "Who is this person?"
-  }
-  arr = arr2
-  return json
-}
-function newQuestion3() {
-  const arr2 = [...arr]
-  let correctword = newCorrect()
-  json = {
-    "correctoption": "option1",
-    "options": {
-      "option1": correctword,
-      "option2": newIncorrect(correctword),
-      "option3": newIncorrect(correctword),
-      "option4": newIncorrect(correctword)
-    },
-    "question": "Who is this person?"
-  }
-  arr = arr2
-  return json
-} function newQuestion4() {
-  const arr2 = [...arr]
-  let correctword = newCorrect()
-  json = {
-    "correctoption": "option4",
-    "options": {
-      "option1": newIncorrect(correctword),
-      "option2": newIncorrect(correctword),
-      "option3": newIncorrect(correctword),
-      "option4": correctword
-    },
-    "question": "Who is this person?"
-  }
-  arr = arr2
-  return json
-}
-const jsonData = {
-  "quiz": {
-    "quiz1": {
-      "question1": newQuestion1(),
-      "question2": newQuestion2(),
-      "question3": newQuestion3(),
-      "question4": newQuestion4(),
-      "question5": newQuestion1()
-    }
-  }
-}
 export default class Quiz extends Component {
   constructor(props) {
     super(props);
     this.qno = 0
     this.score = 0
+    var arr = global.people
 
+
+    
+    //function to retrieve data
+   
+     
+     //function call
+     function randQustion()
+     {
+      switch(Math.floor(Math.random() * 4) + 1) {
+        case 1:
+          return newQuestion1()
+        case 2:
+          return newQuestion2()
+        case 3:
+          return newQuestion3()
+
+        case 4:
+          return newQuestion3()
+        default:
+          return "nothing"
+      } 
+     }
+    function newCorrect() {
+    
+      return arr[Math.floor(Math.random() * arr.length)];
+    
+    }
+    function newIncorrect(correct) {
+    
+      let thing = correct
+      var i
+      while (thing == correct) {
+        i = Math.floor(Math.random() * arr.length)
+        thing = arr[i].name
+      }
+      arr.splice(i, 1)
+    
+      return thing
+    }
+    function newQuestion1() {
+      const arr2 = [...arr]
+      let corr  = newCorrect()
+
+      let correctword  = corr.name
+      json = {
+        "correctoption": "option3",
+        "options": {
+          "option1": newIncorrect(correctword),
+          "option2": newIncorrect(correctword),
+          "option3": correctword,
+          "option4": newIncorrect(correctword)
+        },
+        "question":corr.photo
+      }
+      arr = arr2
+      return json
+    }
+    function newQuestion2() {
+      const arr2 = [...arr]
+      let corr  = newCorrect()
+
+      let correctword  = corr.name
+      json = {
+        "correctoption": "option2",
+        "options": {
+          "option1": newIncorrect(correctword),
+          "option2": correctword,
+          "option3": newIncorrect(correctword),
+          "option4": newIncorrect(correctword)
+        },
+        "question":corr.photo    
+      }
+      arr = arr2
+      return json
+    }
+    function newQuestion3() {
+      const arr2 = [...arr]
+      let corr  = newCorrect()
+
+      let correctword  = corr.name
+      json = {
+        "correctoption": "option1",
+        "options": {
+          "option1": correctword,
+          "option2": newIncorrect(correctword),
+          "option3": newIncorrect(correctword),
+          "option4": newIncorrect(correctword)
+        },
+        "question":corr.photo      }
+      arr = arr2
+      return json
+    } function newQuestion4() {
+      const arr2 = [...arr]
+      let corr  = newCorrect()
+
+      let correctword  = corr.name     
+      json = {
+        "correctoption": "option4",
+        "options": {
+          "option1": newIncorrect(correctword),
+          "option2": newIncorrect(correctword),
+          "option3": newIncorrect(correctword),
+          "option4": correctword
+        },
+        "question":corr.photo      
+      }
+      arr = arr2
+      return json
+    }
+    const jsonData = {
+      "quiz": {
+        "quiz1": {
+          "question1": randQustion(),
+          "question2": randQustion(),
+          "question3": randQustion(),
+          "question4": randQustion(),
+          "question5": randQustion()
+        }
+      }
+    }
+    
     const jdata = jsonData.quiz.quiz1
     arrnew = Object.keys(jdata).map(function (k) { return jdata[k] });
     this.state = {
@@ -126,7 +162,8 @@ export default class Quiz extends Component {
       options: arrnew[this.qno].options,
       correctoption: arrnew[this.qno].correctoption,
       countCheck: 0,
-      status: false
+      status: false,
+      photo: "",
     }
 
   }
@@ -139,7 +176,7 @@ export default class Quiz extends Component {
   next() {
     if (this.qno < arrnew.length - 1) {
       this.qno++
-      this.setState({ countCheck: 0, question: arrnew[this.qno].question, options: arrnew[this.qno].options, correctoption: arrnew[this.qno].correctoption, status: false })
+      this.setState({ countCheck: 0, question: arrnew[this.qno].question, options: arrnew[this.qno].options, correctoption: arrnew[this.qno].correctoption, status: false, photo : arrnew[this.qno].photos })
     } else {
       this.props.quizFinish(this.score * 100 / 5)
     }
@@ -151,6 +188,8 @@ export default class Quiz extends Component {
       this.setState({ countCheck: count })
       if (ans == this.state.correctoption) {
         this.score += 1
+        this.next()
+
         Alert.alert("Good Job! You got it correct");
       }
       else {
@@ -165,6 +204,7 @@ export default class Quiz extends Component {
 
     }
   }
+
   render() {
     let status = this.state.status
     let _this = this
@@ -178,19 +218,26 @@ export default class Quiz extends Component {
     });
 
     return (
-      <View style={styles.container}>
-
+ 
         <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center', marginTop: getStatusBarHeight() + rem*5 }}>
 
           <View style={styles.oval} >
             <Text style={styles.welcome}>
-              {this.state.question}
+              {"Who is this?"}
             </Text>
           </View>
           <View style={{ flex: 6 }}>
-          </View>
+
           <View style = {{flex:1}}></View>
+          <View style={styles.container}>
+                   <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center', }}>
+              <View style={{ width: entireScreenHeight / 2 * 1 * 0.85, height: '100%', marginTop: '1%', }}>
+                <Image style={{ width: '100%', height: '100%' }} source={{uri :this.state.question}} resizeMode='contain'></Image>
+              </View>
+            </View>
+          </View>
           <View style={{ flex: 1, flexDirection: 'row' }}>
+         
             <View style={{ flex: 1 }}>
               {options[0]}
             </View>
@@ -206,19 +253,16 @@ export default class Quiz extends Component {
               {options[3]}
             </View>
           </View>
-          <View style = {{flex:0.6}}>
-            <Button
-              onPress={() => this.next()}
-              title="Next"
-              color="black"
-            />
-
-          </View>
+          
         </View>
       </View>
     );
   }
 }
+
+
+
+
 
 const styles = StyleSheet.create({
 

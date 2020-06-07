@@ -29,7 +29,6 @@ export default class App extends React.Component {
       'Droid': require('./assets/fonts/DroidSans.ttf'),
     });
     global.people = JSON.parse(await AsyncStorage.getItem('people'));
-    console.log(global.people)
     this.setState({ assetsLoaded: true });
   }
   

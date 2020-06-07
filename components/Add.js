@@ -93,12 +93,11 @@ export default class App extends React.Component {
       res = await res.json();
       this.setState({ loading: false });
       if(!res.error){
-        console.log(JSON.stringify(res) + " res")
+       // console.log(JSON.stringify(res) + " res")
         var persons = global.people
         persons = persons == null ? [] : persons
         persons.push({name: this.state.name, memories: this.state.memories, photo: uri, id: res.persistedFaceId})
         global.people = persons
-        console.log(global.people)
         AsyncStorage.setItem('people', JSON.stringify(persons))
         this.props.navigation.navigate('Main')
         setTimeout(() => {  alert("Successfully added!"); }, 100);
@@ -119,7 +118,7 @@ export default class App extends React.Component {
 
   takePicture = async () => {
     if (this.camera) {
-      console.log('pressed papi');
+     // console.log('pressed papi');
       //this.setState({camera: false})
 
       let photo = await this.camera.takePictureAsync();
@@ -162,9 +161,9 @@ export default class App extends React.Component {
     }
     if (this.state.name != "" && uri != null && !empty){
     this.setState({ loading: true });
-    console.log(uri)
+  //  console.log(uri)
     this.uriToBlob(uri).then((blob)  => {
-      console.log(JSON.stringify(global.papito))
+   //   console.log(JSON.stringify(global.papito))
       this.addperson(blob);
 
   }).catch((error) => {
@@ -214,7 +213,7 @@ export default class App extends React.Component {
                   var temp = this.state.memories;
                   temp[item.index]["memory"] = value;
                   this.setState({ items: temp })
-                  console.log(this.state.memories)
+              //    console.log(this.state.memories)
                 }}></TextInput>
               </View>
             </View>
@@ -318,7 +317,7 @@ export default class App extends React.Component {
                 }
                 console.log(this.state.hasPermission)
                 if (this.state.hasPermission) {
-                  console.log('hii')
+              //    console.log('hii')
                   this.setState({name: '', memories: [{ index: 0, memory:'', add: false }, { index: 1, memory: '', add: true }]})
                   this.setState({ camera: true })
                 }
