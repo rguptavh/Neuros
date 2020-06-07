@@ -12,7 +12,7 @@ import people from './components/People';
 import profile from './components/Profile';
 
 let signedup = false
-
+console.disableYellowBox = true;
 export default class App extends React.Component {
   state = {
     assetsLoaded: false,
@@ -33,7 +33,6 @@ export default class App extends React.Component {
     var lastname = await AsyncStorage.getItem('lastname')
     console.log(firstname)
     if (firstname != null && lastname != null){
-      signedup = true
       global.firstname = firstname
       global.lastname = lastname
     }

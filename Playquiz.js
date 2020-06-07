@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     width: scoreCircleSize,
     height: scoreCircleSize,
     borderRadius: scoreCircleSize/2,
-    backgroundColor: "green"
+    backgroundColor: "#86BEFF"
   },
   innerContainer: {
     flex: 1,
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#DAF8FF',
   },
   toolbar:{
         backgroundColor:'#81c04d',
