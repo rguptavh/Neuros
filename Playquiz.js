@@ -55,13 +55,6 @@ export default class Playquiz extends Component {
   render() {
     return (
       <View style={{flex:1}}>
-      <StatusBar barStyle="light-content"/>
-      <View style={styles.toolbar}>
-                    <TouchableOpacity onPress={() => this._onPressBack() }><Text style={styles.toolbarButton}>Back</Text></TouchableOpacity>
-                    <Text style={styles.toolbarTitle}></Text>
-                    <Text style={styles.toolbarButton}></Text>
-      </View>
- 
        { this.state.quizFinish ? <View style={styles.container}>
            <View style={styles.circle}>
  
