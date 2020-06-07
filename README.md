@@ -1,4 +1,4 @@
-# HTNE
+# Neuros
 App to help people with dementia remember things.
 ## 🚀 Installing
 You can clone this repository by running `git clone https://github.com/rguptavh/HTNE.git`
