@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, AppLoading } from 'react-native';
+import { StyleSheet, Text, View, AppLoading, AsyncStorage } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack'
 import { createAppContainer } from 'react-navigation';
 import * as Font from 'expo-font';
@@ -8,6 +8,8 @@ import main from './components/Main';
 import memory from './components/Memory';
 import add from './components/Add';
 import quiz from './Playquiz';
+import people from './components/People';
+import profile from './components/Profile';
 
 let signedup = false
 
@@ -26,6 +28,8 @@ export default class App extends React.Component {
       'DroidB': require('./assets/fonts/DroidSans-Bold.ttf'),
       'Droid': require('./assets/fonts/DroidSans.ttf'),
     });
+    global.people = JSON.parse(await AsyncStorage.getItem('people'));
+    console.log(global.people)
     this.setState({ assetsLoaded: true });
   }
   
@@ -52,6 +56,12 @@ export default class App extends React.Component {
         },
         Quiz: {
           screen:quiz
+        },
+        People: {
+          screen:people
+        },
+        Profile: {
+          screen:profile
         },
       },
         {

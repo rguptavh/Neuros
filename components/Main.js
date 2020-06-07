@@ -486,7 +486,7 @@ export default class App extends React.Component {
                     shadowRadius: 3.65,
 
                     elevation: 8,
-                  }}>
+                  }}onPress={() => this.props.navigation.navigate('People')}>
                     <LinearGradient
                       colors={['#B1E2FE', '#86BEFF']}
                       style={{ height: '100%', alignItems: 'center', borderRadius: 20, width: '100%', justifyContent: 'center', }}>
@@ -495,7 +495,7 @@ export default class App extends React.Component {
                         <Image style={{ width: '100%', height: '100%' }} source={require('../assets/user.png')} resizeMode='contain'></Image>
                       </View>
                       <View style={{ flex: 3, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: Math.min(12.5 * rem, 22.5 * wid) }}>Your People</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: Math.min(12.5 * rem, 22.5 * wid) }}>Added People</Text>
                       </View>
                     </LinearGradient>
                   </TouchableOpacity>

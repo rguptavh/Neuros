@@ -7,6 +7,7 @@ import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
 import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 
 const entireScreenHeight = Dimensions.get('window').height;
@@ -15,7 +16,7 @@ const entireScreenWidth = Dimensions.get('window').width;
 const wid = entireScreenWidth / 380;
 export default class App extends React.Component {
   state = {
-    people: [{name: 'RG', id:'iocsjdfoids'}]
+    people: global.people
   }
   constructor() {
     super();
@@ -24,50 +25,19 @@ export default class App extends React.Component {
     Text.defaultProps.allowFontScaling = false;
   }
 
-
+  profile = (person) =>{
+    global.selected = person
+    this.props.navigation.navigate('Profile')
+  }
 
   _renderItem = ({ item }) => {
-    const rightButtons = [
-      <TouchableHighlight style={{ backgroundColor: 'red', height: '100%', justifyContent: 'center', marginLeft: wid * 5 }} onPress={() => this.deleteNote(item)}><Text style={{ color: 'white', paddingLeft: entireScreenHeight / 50 }}>Delete</Text></TouchableHighlight>,];
-    var f = false
-    if (first) {
-      f = true;
-      first = false;
-    }
-    if (item.add) {
-      return (
-        <View style={{ height: rem * 35, width: '100%', marginTop: rem * 7 }}>
-          <TouchableOpacity style={{ height: '60%', width: '100%', flexDirection: 'row', alignItems: 'center', }} onPress={this.addmemory}>
-            <Image style={{ flex: 0.75, width: '100%', height: '100%', }} source={require('../assets/plus.png')} resizeMode='contain'>
-            </Image>
-            <View style={{ flex: 0.2 }}></View>
-            <View style={{ flex: 3 }}>
-              <Text style={{ fontFamily: 'Droid', fontSize: rem * 15 }}>Add Memory</Text>
-            </View>
-          </TouchableOpacity>
+    return(
+      <View style = {{borderTopWidth:1, borderTopColor:'#D3D3D3', paddingTop:rem*5, paddingBottom:rem*5, borderBottomWidth: item.name == global.people[global.people.length-1].name ? 1 : 0, borderBottomColor:'#D3D3D3', marginLeft:'5%'}}>
+        <TouchableOpacity style = {{flex:1, width:'100%'}} onPress={() => this.profile(item)}>
+        <Text style = {{fontFamily:'Droid', fontSize:rem*8}}>{item.name}</Text>
+        </TouchableOpacity>
         </View>
-      );
-    }
-    else {
-      return (
-
-        <View style={{ width: '100%', marginTop: rem * 7, backgroundColor: '#DAF8FF' }}>
-          <Swipeable rightButtons={rightButtons} rightButtonWidth={entireScreenWidth / 5} bounceOnMount={f}>
-            <View style={{ width: '100%', flexDirection: 'row', }}>
-              <View style={{ flex: 1, borderWidth: 2, borderRadius: 20, justifyContent: 'center', paddingTop: rem * 2, paddingBottom: rem * 2 }}>
-                <TextInput style={{ flex: 1, width: '90%', marginLeft: '5%', fontFamily: 'Droid', fontSize: rem * 15 }} multiline={true} placeholder="Memory" onChangeText={(value) => {
-                  var temp = this.state.memories;
-                  temp[item.index]["memory"] = value;
-                  this.setState({ items: temp })
-                  console.log(this.state.memories)
-                }}></TextInput>
-              </View>
-            </View>
-          </Swipeable>
-        </View>
-
-      );
-    }
+    );
 
   };
 
@@ -77,16 +47,11 @@ export default class App extends React.Component {
       return (
 
         <View style={styles.container}>
-            <View style={{ flex: 1, width: '90%', alignItems: 'center' }}>
-              <Image source={require('../assets/pastdrives.png')} style={{
-                height: '100%',
-                width: '84%',
-                marginTop: '10%',
-                flex: 1,
-              }} resizeMode="contain"></Image>
+            <View style={{ flex: 1, width: '90%', alignItems: 'center',  marginTop: getStatusBarHeight() + wid*10 }}>
+              <Text>Added people</Text>
             </View>
-            <View style={{ width: '100%', flex: 6, justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={{ fontSize: 25 * wid, color: 'white', fontFamily: 'WSB' }}>Please log your first drive!</Text>
+            <View style={{ width: '100%', flex: 6, justifyContent: 'center', alignItems: 'center', }}>
+              <Text style={{ fontSize: 25 * wid, color: 'black', fontFamily: 'WSB' }}>Please add your first person!</Text>
             </View>
             <View style={{
               width: '73%',
@@ -118,13 +83,8 @@ export default class App extends React.Component {
       return (
 
         <View style={styles.container}>
-            <View style={{ flex: 1, width: '90%', alignItems: 'center' }}>
-              <Image source={require('../assets/pastdrives.png')} style={{
-                height: '100%',
-                width: '100%',
-                marginTop: '10%',
-                flex: 1,
-              }} resizeMode="contain"></Image></View>
+            <View style={{ flex: 1, width: '90%', alignItems: 'center',  marginTop: getStatusBarHeight() + wid*10 }}>
+            <Text style = {{fontFamily:'DroidB', fontSize:Math.min(rem*20,wid*36), color:'#86BEFF'}}>Added People</Text></View>
             <View style={{ width: '100%', flex: 6 }}>
               <FlatList style={{ width: '100%' }}
                 data={this.state.people}
@@ -146,7 +106,7 @@ export default class App extends React.Component {
                   flex: 1,
                   width: entireScreenHeight / 8 * 0.96,
                 }}
-                onPress={onPress}
+                onPress={() => this.props.navigation.navigate('Main')}
                 disabled={this.state.loading}
 
               >
