@@ -7,6 +7,8 @@ import signup from './components/Signup';
 import main from './components/Main';
 import memory from './components/Memory';
 import add from './components/Add';
+import quiz from './Playquiz';
+
 let signedup = false
 
 export default class App extends React.Component {
@@ -47,6 +49,9 @@ export default class App extends React.Component {
         },
         Add: {
           screen:add
+        },
+        Quiz: {
+          screen:quiz
         },
       },
         {
