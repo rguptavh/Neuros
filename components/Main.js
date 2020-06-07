@@ -84,6 +84,20 @@ export default class App extends React.Component {
     })
   }
 
+  define = async(word) => {
+    let pons = await fetch('https://wordsapiv1.p.rapidapi.com/words/'+word+'/definitions', {
+          
+      method: 'GET',
+      headers: {
+        "x-rapidapi-host": "wordsapiv1.p.rapidapi.com",
+        "x-rapidapi-key": "c62cc4aa93msh7a8a08e670a64bap154463jsna1335d88278f"
+      }
+    });
+    pons = await pons.json();
+    console.log('i');
+    console.log(pons);
+  }
+
   findperson = async(papi) => {
     var listid = 'bruhbruh';
     try {
@@ -581,7 +595,7 @@ export default class App extends React.Component {
                     shadowRadius: 3.65,
 
                     elevation: 8,
-                  }}>
+                  }} onPress = {() => this.define('mouse')}>
                     <LinearGradient
                       colors={['#B1E2FE', '#86BEFF']}
                       style={{ height: '100%', alignItems: 'center', borderRadius: 20, width: '100%', justifyContent: 'center', }}>
