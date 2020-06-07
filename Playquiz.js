@@ -54,7 +54,7 @@ export default class Playquiz extends Component {
   }
   render() {
     return (
-      <View style={{flex:1}}>
+      <View style={{flex:1, backgroundColor: '#DAF8FF'}}>
        { this.state.quizFinish ? <View style={styles.container}>
            <View style={styles.circle}>
  

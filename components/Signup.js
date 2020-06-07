@@ -47,15 +47,23 @@ export default class App extends React.Component {
         if (res == '') {
           global.firstname = this.state.firstname
           global.lastname = this.state.lastname
-          if(AsyncStorage.getItem('people')==null){
-          AsyncStorage.setItem('people', [])
+          if(await AsyncStorage.getItem('people')==null){
+          AsyncStorage.setItem('people', JSON.stringify([]))
         }
+        AsyncStorage.setItem('fistname', this.state.firstname)
+        AsyncStorage.setItem('lastname', this.state.lastname)
           this.props.navigation.replace('Main')
           return
         }
         res = JSON.parse(res)
         if (res.error.code == 'FaceListExists') {
-          global.name = this.state.firstname + " " + this.state.lastname
+          global.firstname = this.state.firstname
+          global.lastname = this.state.lastname
+          if(await AsyncStorage.getItem('people')==null){
+          AsyncStorage.setItem('people', JSON.stringify([]))
+        }
+        AsyncStorage.setItem('firstname', this.state.firstname)
+        AsyncStorage.setItem('lastname', this.state.lastname)
           this.props.navigation.replace('Main')
         }
         else {

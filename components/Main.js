@@ -136,7 +136,8 @@ export default class App extends React.Component {
         if(pons.length!=0){
           console.log(global.people)
           for (const item of global.people){
-            if (item.id == res.persistedFaceId){
+            console.log(item.id + " " + pons[0].persistedFaceId)
+            if (item.id == pons[0].persistedFaceId){
               this.setState({ loading: false });
               global.selected = item
               this.props.navigation.navigate('Profile')
@@ -417,7 +418,7 @@ export default class App extends React.Component {
 
                 elevation: 8,
               }}>
-                <Text style={{ fontSize: Math.min(rem * 17.5, wid * 31.5), fontWeight: 'bold', color: 'white', fontFamily: 'DroidB' }}>{global.name}</Text>
+                <Text style={{ fontSize: Math.min(rem * 17.5, wid * 31.5), fontWeight: 'bold', color: 'white', fontFamily: 'DroidB' }}>{global.firstname} {global.lastname}</Text>
               </View>
             </View>
             <View style={{ flex: 0.5, width: '100%' }}></View>
