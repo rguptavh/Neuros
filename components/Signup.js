@@ -1,7 +1,8 @@
+import * as firebase from 'firebase';
 import React from 'react';
-import { StyleSheet, Text, View, KeyboardAvoidingView, TouchableWithoutFeedback, Dimensions, Image, TextInput, TouchableOpacity, Keyboard, AsyncStorage } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { AsyncStorage, Dimensions, Image, Keyboard, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
+
 
 const entireScreenHeight = Dimensions.get('window').height;
 const rem = entireScreenHeight / 380;
@@ -29,6 +30,7 @@ export default class App extends React.Component {
   signup = async () => {
     this.setState({ loading: true })
     if (this.state.firstname != '' && this.state.lastname != '') {
+      firebase.auth().signInAnonymously();
       var firstlast = this.state.firstname + this.state.lastname;
       firstlast = firstlast.toLowerCase();
       var data = { name: firstlast };

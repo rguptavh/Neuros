@@ -1,18 +1,32 @@
-import React from 'react';
-import { StyleSheet, Text, View, AppLoading, AsyncStorage } from 'react-native';
-import { createStackNavigator } from 'react-navigation-stack'
-import { createAppContainer } from 'react-navigation';
 import * as Font from 'expo-font';
-import signup from './components/Signup';
+import * as firebase from 'firebase';
+import React from 'react';
+import { AsyncStorage, StyleSheet, Text } from 'react-native';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import add from './components/Add';
 import main from './components/Main';
 import memory from './components/Memory';
-import add from './components/Add';
-import quiz from './Playquiz';
 import people from './components/People';
 import profile from './components/Profile';
+import signup from './components/Signup';
+import quiz from './Playquiz';
+import chat from './components/Chat';
 
 let signedup = false
 console.disableYellowBox = true;
+var firebaseConfig = {
+  apiKey: "AIzaSyBCwgl2VgGc_rTcm2FK7Pm0xQ5wrrxXhgM",
+  authDomain: "neuros.firebaseapp.com",
+  databaseURL: "https://neuros.firebaseio.com",
+  projectId: "neuros",
+  storageBucket: "neuros.appspot.com",
+  messagingSenderId: "662909994780",
+  appId: "1:662909994780:web:ea25f0023da4971bfc9cd9"
+};
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 export default class App extends React.Component {
   state = {
     assetsLoaded: false,
@@ -68,6 +82,9 @@ export default class App extends React.Component {
         },
         Profile: {
           screen:profile
+        },
+        Chat: {
+          screen:chat
         },
       },
         {

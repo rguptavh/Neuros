@@ -420,6 +420,7 @@ export default class App extends React.Component {
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
           <View style={styles.container}>
             <View style={{ flex: 1, width: '85%', marginTop: getStatusBarHeight(), }}>
+            <TouchableOpacity onPress= {() => this.props.navigation.navigate('Chat')}>
               <View style={{
                 width: '100%', height: '100%', backgroundColor: '#86BEFF', borderRadius: 20, justifyContent: 'center', alignItems: 'center', shadowOffset: {
                   width: 0,
@@ -430,8 +431,11 @@ export default class App extends React.Component {
 
                 elevation: 8,
               }}>
+               
                 <Text style={{ fontSize: Math.min(rem * 17.5, wid * 31.5), fontWeight: 'bold', color: 'white', fontFamily: 'DroidB' }}>{global.firstname} {global.lastname}</Text>
+                
               </View>
+              </TouchableOpacity>
             </View>
             <View style={{ flex: 0.5, width: '100%' }}></View>
             <View style={{ flex: 9, width: '90%' }}>
